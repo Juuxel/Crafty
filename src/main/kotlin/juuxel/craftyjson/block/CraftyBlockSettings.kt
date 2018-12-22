@@ -4,7 +4,7 @@
  */
 package juuxel.craftyjson.block
 
-import juuxel.craftyjson.CraftyContent
+import juuxel.craftyjson.util.CraftyContent
 import juuxel.craftyjson.item.CraftyItemSettings
 import juuxel.craftyjson.item.CraftyItemStack
 import net.fabricmc.fabric.block.FabricBlockSettings

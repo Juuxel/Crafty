@@ -5,9 +5,12 @@
 package juuxel.craftyjson.item
 
 import com.google.gson.JsonObject
-import juuxel.craftyjson.CraftyContent
-import juuxel.craftyjson.util.Converter
+import com.mojang.datafixers.Dynamic
+import com.mojang.datafixers.types.JsonOps
+import juuxel.craftyjson.util.CraftyContent
+import net.minecraft.datafixers.NbtOps
 import net.minecraft.item.ItemStack
+import net.minecraft.nbt.CompoundTag
 import net.minecraft.util.Identifier
 import net.minecraft.util.registry.Registry
 
@@ -19,6 +22,6 @@ class CraftyItemStack : CraftyContent<ItemStack>() {
         private set
 
     override fun toMc(): ItemStack = ItemStack(Registry.ITEM.get(Identifier(id)), amount).also {
-        it.tag = Converter.toNbt(tag)
+        it.tag = Dynamic.convert(JsonOps.INSTANCE, NbtOps.INSTANCE, tag) as CompoundTag
     }
 }

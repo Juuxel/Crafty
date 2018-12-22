@@ -2,7 +2,7 @@
  * by Juuxel, licensed under the MIT license.
  * Full code and license: https://github.com/Juuxel/CraftyJSON
  */
-package juuxel.craftyjson
+package juuxel.craftyjson.util
 
 abstract class CraftyContent<out T> {
     lateinit var id: String

@@ -4,7 +4,7 @@
  */
 package juuxel.craftyjson.item
 
-import juuxel.craftyjson.CraftyContent
+import juuxel.craftyjson.util.CraftyContent
 import net.minecraft.item.Item
 import net.minecraft.item.ItemGroup
 

@@ -33,9 +33,7 @@ open class CraftyBlock(val settings: CraftyBlockSettings) : Block(settings.toMc(
         builder: LootContext.Builder?
     ): List<ItemStack> = super.getDroppedStacks(state, builder).run {
         if (isEmpty()) {
-            val list = toMutableList()
-            list += settings.drops.map(CraftyItemStack::toMc)
-            list
+            settings.drops.map(CraftyItemStack::toMc)
         } else this
     }
 }

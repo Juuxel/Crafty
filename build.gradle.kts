@@ -32,7 +32,7 @@ repositories {
 dependencies {
 	compile(kotlin("stdlib-jdk8"))
 	minecraft("com.mojang:minecraft:18w50a")
-	mappings("net.fabricmc:yarn:18w50a.35")
+	mappings("net.fabricmc:yarn:18w50a.57")
 	modCompile("net.fabricmc:fabric-loader:0.2.0.70")
     modCompile("net.fabricmc:fabric-language-kotlin:1.3.10-26")
     compileOnly("net.fabricmc:fabric-language-kotlin:1.3.10-26")
