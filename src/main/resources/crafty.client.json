@@ -1,6 +1,6 @@
 {
   "required": true,
-  "package": "juuxel.craftyjson.mixin",
+  "package": "juuxel.crafty.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
   ],

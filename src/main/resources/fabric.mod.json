@@ -1,10 +1,10 @@
 {
-  "id": "craftyjson",
-  "name": "CraftyJSON",
+  "id": "crafty",
+  "name": "Crafty",
   "description": "Custom blocks and items using JSON",
   "version": "1.0.0",
   "side": "universal",
-  "initializer": "juuxel.craftyjson.CraftyJSON",
+  "initializer": "juuxel.crafty.Crafty",
   "requires": {
     "fabric": "*",
     "fabric-language-kotlin": {
@@ -12,8 +12,8 @@
     }
   },
   "mixins": {
-    "client": "craftyjson.client.json",
-    "common": "craftyjson.common.json"
+    "client": "crafty.client.json",
+    "common": "crafty.common.json"
   },
   "languageAdapter": "net.fabricmc.language.kotlin.KotlinLanguageAdapter"
 }

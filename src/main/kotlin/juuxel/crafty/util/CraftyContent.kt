@@ -1,8 +1,8 @@
-/* This file is a part of the CraftyJSON project
+/* This file is a part of the Crafty project
  * by Juuxel, licensed under the MIT license.
- * Full code and license: https://github.com/Juuxel/CraftyJSON
+ * Full code and license: https://github.com/Juuxel/Crafty
  */
-package juuxel.craftyjson.util
+package juuxel.crafty.util
 
 abstract class CraftyContent<out T> {
     lateinit var id: String

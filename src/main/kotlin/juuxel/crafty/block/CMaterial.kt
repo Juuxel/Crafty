@@ -1,12 +1,12 @@
-/* This file is a part of the CraftyJSON project
+/* This file is a part of the Crafty project
  * by Juuxel, licensed under the MIT license.
- * Full code and license: https://github.com/Juuxel/CraftyJSON
+ * Full code and license: https://github.com/Juuxel/Crafty
  */
-package juuxel.craftyjson.block
+package juuxel.crafty.block
 
 import net.minecraft.sound.BlockSoundGroup
 
-class CraftyBlockMaterial {
+class CMaterial {
     lateinit var base: String
         private set
 
@@ -23,9 +23,6 @@ class CraftyBlockMaterial {
         private set
 
     var sounds: SoundGroup? = null
-        private set
-
-    var waterloggable: Boolean = false
         private set
 
     enum class SoundGroup(val mc: BlockSoundGroup) {

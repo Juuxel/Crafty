@@ -1,16 +1,17 @@
-/* This file is a part of the CraftyJSON project
+/* This file is a part of the Crafty project
  * by Juuxel, licensed under the MIT license.
- * Full code and license: https://github.com/Juuxel/CraftyJSON
+ * Full code and license: https://github.com/Juuxel/Crafty
  */
-package juuxel.craftyjson
+package juuxel.crafty
 
-import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.google.gson.stream.JsonReader
-import juuxel.craftyjson.block.CraftyBlock
-import juuxel.craftyjson.block.CraftyBlockSettings
-import juuxel.craftyjson.block.CraftyWaterloggableBlock
-import juuxel.craftyjson.item.CraftyItemSettings
-import juuxel.craftyjson.util.fromJson
+import juuxel.crafty.block.Quirk
+import juuxel.crafty.block.CBlockSettings
+import juuxel.crafty.item.CItemGroup
+import juuxel.crafty.item.CItemSettings
+import juuxel.crafty.util.Deserializers
+import juuxel.crafty.util.fromJson
 import net.fabricmc.api.ModInitializer
 import net.minecraft.item.Item
 import net.minecraft.item.block.BlockItem
@@ -21,10 +22,13 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 
-object CraftyJSON : ModInitializer {
+object Crafty : ModInitializer {
     private val logger = LogManager.getLogger()
-    private val gson = Gson()
-    private val directory = Paths.get("./craftyjson/")
+    private val gson = GsonBuilder().apply {
+        registerTypeAdapter(Quirk::class.java, Deserializers.Quirk)
+        registerTypeAdapter(CItemGroup::class.java, Deserializers.CreativeTab)
+    }.create()
+    private val directory = Paths.get("./crafty/")
     private const val blockDir = "blocks"
     private const val itemDir = "items"
     val craftPacks: Set<String> get() = _craftPacks
@@ -48,7 +52,7 @@ object CraftyJSON : ModInitializer {
         Files.newDirectoryStream(directory).forEach {
             val pack = it.fileName.toString()
             _craftPacks += pack
-            logger.info("[CraftyJSON] Loading craftpack $pack: $dir")
+            logger.info("[Crafty] Loading craftpack $pack: $dir")
             if (Files.isDirectory(it)) Files.newDirectoryStream(it).forEach { l2 ->
                 if (Files.isDirectory(l2) && l2.fileName.toString() == dir)
                     Files.newDirectoryStream(l2).forEach { file ->
@@ -62,10 +66,8 @@ object CraftyJSON : ModInitializer {
 
     private fun loadBlock(path: Path) {
         try {
-            val settings = gson.fromJson<CraftyBlockSettings>(JsonReader(Files.newBufferedReader(path)))
-            val block =
-                if (settings.material.waterloggable) CraftyWaterloggableBlock(settings)
-                else CraftyBlock(settings)
+            val settings = gson.fromJson<CBlockSettings>(JsonReader(Files.newBufferedReader(path)))
+            val block = settings.quirk.factory(settings)
 
             Registry.BLOCK.register(Identifier(settings.id), block)
 
@@ -80,7 +82,7 @@ object CraftyJSON : ModInitializer {
 
     private fun loadItem(path: Path) {
         try {
-            val settings = gson.fromJson<CraftyItemSettings>(JsonReader(Files.newBufferedReader(path)))
+            val settings = gson.fromJson<CItemSettings>(JsonReader(Files.newBufferedReader(path)))
             val item = Item(settings.toMc())
             Registry.ITEM.register(Identifier(settings.id), item)
         } catch (e: Exception) {
