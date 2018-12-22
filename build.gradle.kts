@@ -25,10 +25,6 @@ tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
 }
 
-repositories {
-    maven(url = "https://minecraft.curseforge.com/api/maven/")
-}
-
 dependencies {
 	compile(kotlin("stdlib-jdk8"))
 	minecraft("com.mojang:minecraft:18w50a")
