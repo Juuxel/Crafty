@@ -4,7 +4,7 @@
  */
 package juuxel.crafty.block
 
-import juuxel.crafty.util.CraftyContent
+import juuxel.crafty.util.Content
 import juuxel.crafty.item.CItemSettings
 import juuxel.crafty.item.CItemStack
 import net.fabricmc.fabric.block.FabricBlockSettings
@@ -12,7 +12,7 @@ import net.minecraft.block.Block
 import net.minecraft.util.Identifier
 import net.minecraft.util.registry.Registry
 
-class CBlockSettings : CraftyContent<Block.Settings>() {
+class CBlockSettings : Content<Block.Settings>() {
     lateinit var material: CMaterial
         private set
 

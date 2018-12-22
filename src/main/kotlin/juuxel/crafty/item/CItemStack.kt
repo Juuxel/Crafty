@@ -7,14 +7,14 @@ package juuxel.crafty.item
 import com.google.gson.JsonObject
 import com.mojang.datafixers.Dynamic
 import com.mojang.datafixers.types.JsonOps
-import juuxel.crafty.util.CraftyContent
+import juuxel.crafty.util.Content
 import net.minecraft.datafixers.NbtOps
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.util.Identifier
 import net.minecraft.util.registry.Registry
 
-class CItemStack : CraftyContent<ItemStack>() {
+class CItemStack : Content<ItemStack>() {
     var amount: Int = 1
         private set
 

@@ -4,10 +4,10 @@
  */
 package juuxel.crafty.item
 
-import juuxel.crafty.util.CraftyContent
+import juuxel.crafty.util.Content
 import net.minecraft.item.Item
 
-class CItemSettings : CraftyContent<Item.Settings>() {
+class CItemSettings : Content<Item.Settings>() {
     var tab: CItemGroup? = null
         private set
 

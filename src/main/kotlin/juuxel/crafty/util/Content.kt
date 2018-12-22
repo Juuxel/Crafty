@@ -4,7 +4,7 @@
  */
 package juuxel.crafty.util
 
-abstract class CraftyContent<out T> {
+abstract class Content<out T> {
     lateinit var id: String
         private set
 
