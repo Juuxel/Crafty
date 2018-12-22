@@ -7,6 +7,7 @@ package juuxel.crafty.util
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer
 import com.google.gson.JsonElement
+import juuxel.crafty.block.CMaterial
 import juuxel.crafty.block.Quirk as Quirk2
 import juuxel.crafty.block.Quirks
 import juuxel.crafty.item.CItemGroup
@@ -27,5 +28,13 @@ object Deserializers {
             typeOfT: Type?,
             context: JsonDeserializationContext?
         ) = CItemGroup.fromString(json.asString)
+    }
+
+    object SoundGroup : JsonDeserializer<CMaterial.SoundGroup> {
+        override fun deserialize(
+            json: JsonElement,
+            typeOfT: Type?,
+            context: JsonDeserializationContext?
+        ) = CMaterial.SoundGroup.fromString(json.asString)
     }
 }

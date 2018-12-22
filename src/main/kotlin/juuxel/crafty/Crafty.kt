@@ -8,6 +8,7 @@ import com.google.gson.GsonBuilder
 import com.google.gson.stream.JsonReader
 import juuxel.crafty.block.Quirk
 import juuxel.crafty.block.CBlockSettings
+import juuxel.crafty.block.CMaterial
 import juuxel.crafty.item.CItemGroup
 import juuxel.crafty.item.CItemSettings
 import juuxel.crafty.util.Deserializers
@@ -27,6 +28,7 @@ object Crafty : ModInitializer {
     private val gson = GsonBuilder().apply {
         registerTypeAdapter(Quirk::class.java, Deserializers.Quirk)
         registerTypeAdapter(CItemGroup::class.java, Deserializers.CreativeTab)
+        registerTypeAdapter(CMaterial.SoundGroup::class.java, Deserializers.SoundGroup)
     }.create()
     private val directory = Paths.get("./crafty/")
     private const val blockDir = "blocks"

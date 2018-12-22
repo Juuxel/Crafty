@@ -42,7 +42,31 @@ class CMaterial {
         Coral(BlockSoundGroup.CORAL),
         Bamboo(BlockSoundGroup.BAMBOO),
         BambooSapling(BlockSoundGroup.BAMBOO_SAPLING),
-        Scaffolding(BlockSoundGroup.SCAFFOLDING)
+        Scaffolding(BlockSoundGroup.SCAFFOLDING);
+
+        companion object {
+            private val stringMap = mapOf(
+                "wood" to Wood,
+                "gravel" to Gravel,
+                "grass" to Grass,
+                "stone" to Stone,
+                "metal" to Metal,
+                "glass" to Glass,
+                "wool" to Wool,
+                "sand" to Sand,
+                "snow" to Snow,
+                "ladder" to Ladder,
+                "anvil" to Anvil,
+                "slime" to Slime,
+                "wet_grass" to WetGrass,
+                "coral" to Coral,
+                "bamboo" to Bamboo,
+                "bamboo_sapling" to BambooSapling,
+                "scaffolding" to Scaffolding
+            )
+
+            fun fromString(str: String) = stringMap[str]
+        }
     }
 }
  
