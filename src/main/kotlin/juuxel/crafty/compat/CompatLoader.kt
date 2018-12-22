@@ -5,6 +5,7 @@
 package juuxel.crafty.compat
 
 import juuxel.crafty.block.Quirks
+import net.minecraft.util.Identifier
 import org.apache.logging.log4j.LogManager
 
 object CompatLoader {
@@ -13,7 +14,7 @@ object CompatLoader {
     fun load() {
         ifPresent("virtuoel.towelette.api.Fluidloggable") {
             logger.info("[Crafty/Compat] Loading Towelette compat")
-            Quirks.register("fluidloggable", CraftyFluidloggableBlock)
+            Quirks.register(Identifier("craftycompat:fluidloggable"), CraftyFluidloggableBlock)
         }
     }
 
