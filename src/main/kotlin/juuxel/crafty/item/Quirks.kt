@@ -4,17 +4,20 @@
  */
 package juuxel.crafty.item
 
+import net.minecraft.item.FoodItem
 import net.minecraft.item.Item
 import org.apache.logging.log4j.LogManager
 import java.util.*
 
 enum class Quirks(override val factory: (CItemSettings) -> Item) : Quirk {
-    None({ Item(it.toMc()) });
+    None({ Item(it.toMc()) }),
+    Food({ FoodItem(it.food!!.hungerRestored, it.food!!.saturation, it.food!!.wolfFood, it.toMc()) });
 
     companion object {
         private val logger = LogManager.getLogger()
         private val stringMap: MutableMap<String, Quirk> = mutableMapOf(
-            "none" to None
+            "none" to None,
+            "food" to Food
         )
 
         fun register(name: String, quirk: Quirk) {

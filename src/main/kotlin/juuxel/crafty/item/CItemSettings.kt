@@ -14,8 +14,16 @@ class CItemSettings : CraftyContent<Item.Settings>() {
     var quirk: Quirk = Quirks.None
         private set
 
-    override fun toMc() = Item.Settings().apply {
-        tab?.let { itemGroup(it.mc) }
-    }
+    var food: FoodSettings? = null
+        private set
 
+    /*var stackSize: Int = 64
+        private set
+
+    var durability: Int = 0
+        private set*/
+
+    override fun toMc() = Item.Settings().apply {
+        tab?.let { itemGroup(it.mc)/*.stackSize(stackSize).durability(durability)*/ }
+    }
 }
