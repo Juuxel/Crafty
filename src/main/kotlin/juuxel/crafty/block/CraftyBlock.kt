@@ -32,11 +32,7 @@ open class CraftyBlock(val settings: CBlockSettings) : Block(settings.toMc()) {
     override fun getDroppedStacks(
         state: BlockState?,
         builder: LootContext.Builder?
-    ): List<ItemStack> = super.getDroppedStacks(state, builder).run {
-        if (isEmpty()) {
-            settings.drops.map(CItemStack::toMc)
-        } else this
-    }
+    ) = Drops.getDrops(super.getDroppedStacks(state, builder), settings)
 }
 
 class CraftyWaterloggableBlock(settings: CBlockSettings) : CraftyBlock(settings), Waterloggable {
@@ -70,9 +66,5 @@ open class CraftyFallingBlock(val settings: CBlockSettings) : FallingBlock(setti
     override fun getDroppedStacks(
         state: BlockState?,
         builder: LootContext.Builder?
-    ): List<ItemStack> = super.getDroppedStacks(state, builder).run {
-        if (isEmpty()) {
-            settings.drops.map(CItemStack::toMc)
-        } else this
-    }
+    ) = Drops.getDrops(super.getDroppedStacks(state, builder), settings)
 }
