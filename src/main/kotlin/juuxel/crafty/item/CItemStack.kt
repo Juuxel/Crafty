@@ -13,15 +13,28 @@ import net.minecraft.item.ItemStack
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.util.Identifier
 import net.minecraft.util.registry.Registry
+import java.util.concurrent.ThreadLocalRandom
 
 class CItemStack : Content<ItemStack>() {
-    var amount: Int = 1
+    var amount: Size = Size()
         private set
 
     var tag: JsonObject = JsonObject()
         private set
 
-    override fun toMc(): ItemStack = ItemStack(Registry.ITEM.get(Identifier(id)), amount).also {
+    override fun toMc(): ItemStack = ItemStack(Registry.ITEM.get(Identifier(id)), amount.toInt()).also {
         it.tag = Dynamic.convert(JsonOps.INSTANCE, NbtOps.INSTANCE, tag) as CompoundTag
+    }
+
+    class Size {
+        var from: Int = 1
+            internal set
+
+        var to: Int = 1
+            internal set
+
+        fun toInt() =
+            if (from == to) from
+            else ThreadLocalRandom.current().nextInt(from, to + 1)
     }
 }

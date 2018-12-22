@@ -12,6 +12,7 @@ import juuxel.crafty.block.CMaterial
 import juuxel.crafty.compat.CompatLoader
 import juuxel.crafty.item.CItemGroup
 import juuxel.crafty.item.CItemSettings
+import juuxel.crafty.item.CItemStack
 import juuxel.crafty.item.Quirk as ItemQuirk
 import juuxel.crafty.util.Deserializers
 import juuxel.crafty.util.fromJson
@@ -32,6 +33,7 @@ object Crafty : ModInitializer {
         registerTypeAdapter(ItemQuirk::class.java, Deserializers.ItemQuirk)
         registerTypeAdapter(CItemGroup::class.java, Deserializers.CreativeTab)
         registerTypeAdapter(CMaterial.SoundGroup::class.java, Deserializers.SoundGroup)
+        registerTypeAdapter(CItemStack.Size::class.java, Deserializers.Size)
     }.create()
     private val directory = Paths.get("./crafty/")
     private const val blockDir = "blocks"
