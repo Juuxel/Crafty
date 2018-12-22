@@ -11,6 +11,9 @@ class CItemSettings : CraftyContent<Item.Settings>() {
     var tab: CItemGroup? = null
         private set
 
+    var quirk: Quirk = Quirks.None
+        private set
+
     override fun toMc() = Item.Settings().apply {
         tab?.let { itemGroup(it.mc) }
     }

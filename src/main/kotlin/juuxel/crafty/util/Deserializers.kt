@@ -8,18 +8,20 @@ import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer
 import com.google.gson.JsonElement
 import juuxel.crafty.block.CMaterial
-import juuxel.crafty.block.Quirk as Quirk2
-import juuxel.crafty.block.Quirks
+import juuxel.crafty.block.Quirk as BlockQuirk2
+import juuxel.crafty.block.Quirks as BlockQuirks
 import juuxel.crafty.item.CItemGroup
+import juuxel.crafty.item.Quirk as ItemQuirk2
+import juuxel.crafty.item.Quirks as ItemQuirks
 import java.lang.reflect.Type
 
 object Deserializers {
-    object Quirk : JsonDeserializer<Quirk2> {
+    object BlockQuirk : JsonDeserializer<BlockQuirk2> {
         override fun deserialize(
             json: JsonElement,
             typeOfT: Type?,
             context: JsonDeserializationContext?
-        ) = Quirks.fromString(json.asString)
+        ) = BlockQuirks.fromString(json.asString)
     }
 
     object CreativeTab : JsonDeserializer<CItemGroup> {
@@ -36,5 +38,13 @@ object Deserializers {
             typeOfT: Type?,
             context: JsonDeserializationContext?
         ) = CMaterial.SoundGroup.fromString(json.asString)
+    }
+
+    object ItemQuirk : JsonDeserializer<ItemQuirk2> {
+        override fun deserialize(
+            json: JsonElement,
+            typeOfT: Type?,
+            context: JsonDeserializationContext?
+        ) = ItemQuirks.fromString(json.asString)
     }
 }

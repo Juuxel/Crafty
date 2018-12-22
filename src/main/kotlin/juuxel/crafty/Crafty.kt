@@ -6,11 +6,12 @@ package juuxel.crafty
 
 import com.google.gson.GsonBuilder
 import com.google.gson.stream.JsonReader
-import juuxel.crafty.block.Quirk
+import juuxel.crafty.block.Quirk as BlockQuirk
 import juuxel.crafty.block.CBlockSettings
 import juuxel.crafty.block.CMaterial
 import juuxel.crafty.item.CItemGroup
 import juuxel.crafty.item.CItemSettings
+import juuxel.crafty.item.Quirk as ItemQuirk
 import juuxel.crafty.util.Deserializers
 import juuxel.crafty.util.fromJson
 import net.fabricmc.api.ModInitializer
@@ -26,7 +27,8 @@ import java.nio.file.Paths
 object Crafty : ModInitializer {
     private val logger = LogManager.getLogger()
     private val gson = GsonBuilder().apply {
-        registerTypeAdapter(Quirk::class.java, Deserializers.Quirk)
+        registerTypeAdapter(BlockQuirk::class.java, Deserializers.BlockQuirk)
+        registerTypeAdapter(ItemQuirk::class.java, Deserializers.ItemQuirk)
         registerTypeAdapter(CItemGroup::class.java, Deserializers.CreativeTab)
         registerTypeAdapter(CMaterial.SoundGroup::class.java, Deserializers.SoundGroup)
     }.create()
@@ -85,7 +87,7 @@ object Crafty : ModInitializer {
     private fun loadItem(path: Path) {
         try {
             val settings = gson.fromJson<CItemSettings>(JsonReader(Files.newBufferedReader(path)))
-            val item = Item(settings.toMc())
+            val item = settings.quirk.factory(settings)
             Registry.ITEM.register(Identifier(settings.id), item)
         } catch (e: Exception) {
             logger.error("Error while loading item file $path")
