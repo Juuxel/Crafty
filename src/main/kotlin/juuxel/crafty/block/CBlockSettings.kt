@@ -28,7 +28,7 @@ class CBlockSettings : Content<Block.Settings>() {
     var drops: Array<CItemStack> = emptyArray()
         private set
 
-    var quirk: Quirks = Quirks.None
+    var quirk: Quirk = Quirks.None
         private set
 
     override fun toMc(): Block.Settings =

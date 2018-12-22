@@ -9,6 +9,7 @@ import com.google.gson.stream.JsonReader
 import juuxel.crafty.block.Quirk as BlockQuirk
 import juuxel.crafty.block.CBlockSettings
 import juuxel.crafty.block.CMaterial
+import juuxel.crafty.compat.CompatLoader
 import juuxel.crafty.item.CItemGroup
 import juuxel.crafty.item.CItemSettings
 import juuxel.crafty.item.Quirk as ItemQuirk
@@ -39,6 +40,7 @@ object Crafty : ModInitializer {
     private val _craftPacks = HashSet<String>()
 
     override fun onInitialize() {
+        CompatLoader.load()
         checkDirs()
         loadDirectory(blockDir, ::loadBlock)
         loadDirectory(itemDir, ::loadItem)

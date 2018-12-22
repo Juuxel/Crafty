@@ -16,7 +16,7 @@ base {
     archivesBaseName = "Crafty"
 }
 
-version = "0.1.0"
+version = "0.1.1"
 
 minecraft {
 }
@@ -35,4 +35,5 @@ dependencies {
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modCompile("net.fabricmc:fabric:0.1.1.51")
+    modCompile(files("libs/Towelette-1.1.3.0-dev.jar"))
 }

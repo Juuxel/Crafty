@@ -21,6 +21,8 @@ enum class Quirks(override val factory: (CBlockSettings) -> Block) : Quirk {
         )
 
         fun register(name: String, quirk: Quirk) {
+            logger.info("[Crafty] Registering quirk $name: $quirk")
+
             if (!stringMap.containsKey(name))
                 stringMap[name] = quirk
             else
