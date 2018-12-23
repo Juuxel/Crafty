@@ -4,6 +4,7 @@
  */
 package juuxel.crafty.item
 
+import juuxel.crafty.util.ItemUtils
 import net.minecraft.block.Block
 import net.minecraft.client.item.TooltipOptions
 import net.minecraft.item.FoodItem
@@ -14,20 +15,17 @@ import net.minecraft.text.TextComponent
 import net.minecraft.world.World
 
 class CraftyItem(val settings: CItemSettings) : Item(settings.toMc()) {
-    override fun buildTooltip(stack: ItemStack, world: World?, list: MutableList<TextComponent>, opts: TooltipOptions) {
-        settings.tooltip.forEach { list.add(it) }
-    }
+    override fun buildTooltip(stack: ItemStack, world: World?, list: MutableList<TextComponent>, opts: TooltipOptions) =
+        ItemUtils.buildTooltip(list, settings)
 }
 
 class CraftyFoodItem(val settings: CItemSettings) :
     FoodItem(settings.food!!.hungerRestored, settings.food!!.saturation, settings.food!!.wolfFood, settings.toMc()) {
-    override fun buildTooltip(stack: ItemStack, world: World?, list: MutableList<TextComponent>, opts: TooltipOptions) {
-        settings.tooltip.forEach { list.add(it) }
-    }
+    override fun buildTooltip(stack: ItemStack, world: World?, list: MutableList<TextComponent>, opts: TooltipOptions) =
+        ItemUtils.buildTooltip(list, settings)
 }
 
 class CraftyBlockItem(block: Block, val settings: CItemSettings) : BlockItem(block, settings.toMc()) {
-    override fun buildTooltip(stack: ItemStack, world: World?, list: MutableList<TextComponent>, opts: TooltipOptions) {
-        settings.tooltip.forEach { list.add(it) }
-    }
+    override fun buildTooltip(stack: ItemStack, world: World?, list: MutableList<TextComponent>, opts: TooltipOptions) =
+        ItemUtils.buildTooltip(list, settings)
 }

@@ -4,19 +4,17 @@
  */
 package juuxel.crafty.block
 
-import juuxel.crafty.item.CItemStack
+import juuxel.crafty.util.BlockUtils
 import net.minecraft.block.Block
 import net.minecraft.block.BlockState
 import net.minecraft.block.FallingBlock
 import net.minecraft.block.Waterloggable
 import net.minecraft.fluid.Fluids
 import net.minecraft.item.ItemPlacementContext
-import net.minecraft.item.ItemStack
 import net.minecraft.state.StateFactory
 import net.minecraft.state.property.Properties
 import net.minecraft.tag.FluidTags
 import net.minecraft.util.math.BlockPos
-import net.minecraft.util.shape.VoxelShapes
 import net.minecraft.world.BlockView
 import net.minecraft.world.loot.context.LootContext
 
@@ -25,14 +23,12 @@ open class CraftyBlock(val settings: CBlockSettings) : Block(settings.toMc()) {
         blockState_1: BlockState?,
         blockView_1: BlockView?,
         blockPos_1: BlockPos?
-    ) = settings.shape.map {
-        Block.createCubeShape(it.from[0], it.from[1], it.from[2], it.to[0], it.to[1], it.to[2])
-    }.reduce(VoxelShapes::union)
+    ) = BlockUtils.getShape(settings)
 
     override fun getDroppedStacks(
         state: BlockState?,
         builder: LootContext.Builder?
-    ) = Drops.getDrops(super.getDroppedStacks(state, builder), settings)
+    ) = BlockUtils.getDrops(super.getDroppedStacks(state, builder), settings)
 }
 
 class CraftyWaterloggableBlock(settings: CBlockSettings) : CraftyBlock(settings), Waterloggable {
@@ -59,12 +55,10 @@ open class CraftyFallingBlock(val settings: CBlockSettings) : FallingBlock(setti
         blockState_1: BlockState?,
         blockView_1: BlockView?,
         blockPos_1: BlockPos?
-    ) = settings.shape.map {
-        Block.createCubeShape(it.from[0], it.from[1], it.from[2], it.to[0], it.to[1], it.to[2])
-    }.reduce(VoxelShapes::union)
+    ) = BlockUtils.getShape(settings)
 
     override fun getDroppedStacks(
         state: BlockState?,
         builder: LootContext.Builder?
-    ) = Drops.getDrops(super.getDroppedStacks(state, builder), settings)
+    ) = BlockUtils.getDrops(super.getDroppedStacks(state, builder), settings)
 }
