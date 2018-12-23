@@ -10,6 +10,7 @@ import juuxel.crafty.block.Quirk as BlockQuirk
 import juuxel.crafty.block.CBlockSettings
 import juuxel.crafty.block.CMaterial
 import juuxel.crafty.compat.CompatLoader
+import juuxel.crafty.item.CraftyBlockItem
 import juuxel.crafty.item.CItemGroup
 import juuxel.crafty.item.CItemSettings
 import juuxel.crafty.item.CItemStack
@@ -17,8 +18,7 @@ import juuxel.crafty.item.Quirk as ItemQuirk
 import juuxel.crafty.util.Deserializers
 import juuxel.crafty.util.fromJson
 import net.fabricmc.api.ModInitializer
-import net.minecraft.item.Item
-import net.minecraft.item.block.BlockItem
+import net.minecraft.text.TextComponent
 import net.minecraft.util.Identifier
 import net.minecraft.util.registry.Registry
 import org.apache.logging.log4j.LogManager
@@ -34,6 +34,7 @@ object Crafty : ModInitializer {
         registerTypeAdapter(CItemGroup::class.java, Deserializers.CreativeTab)
         registerTypeAdapter(CMaterial.SoundGroup::class.java, Deserializers.SoundGroup)
         registerTypeAdapter(CItemStack.Size::class.java, Deserializers.Size)
+        registerTypeAdapter(TextComponent::class.java, Deserializers.TextComponents)
     }.create()
     private val directory = Paths.get("./crafty/")
     private const val blockDir = "blocks"
@@ -80,7 +81,7 @@ object Crafty : ModInitializer {
             Registry.BLOCK.register(Identifier(settings.id), block)
 
             settings.item?.let { item ->
-                Registry.ITEM.register(Identifier(settings.id), BlockItem(block, item.toMc()))
+                Registry.ITEM.register(Identifier(settings.id), CraftyBlockItem(block, item))
             }
         } catch (e: Exception) {
             logger.error("Error while loading block file $path")

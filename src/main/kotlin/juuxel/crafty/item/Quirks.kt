@@ -11,8 +11,8 @@ import net.minecraft.util.registry.DefaultMappedRegistry
 import net.minecraft.util.registry.Registry
 
 enum class Quirks(override val factory: (CItemSettings) -> Item) : Quirk {
-    None({ Item(it.toMc()) }),
-    Food({ FoodItem(it.food!!.hungerRestored, it.food!!.saturation, it.food!!.wolfFood, it.toMc()) });
+    None(::CraftyItem),
+    Food(::CraftyFoodItem);
 
     companion object : DefaultMappedRegistry<Quirk>("none") {
         init {

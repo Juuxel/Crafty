@@ -12,6 +12,7 @@ import juuxel.crafty.block.Quirk as BlockQuirk2
 import juuxel.crafty.block.Quirks as BlockQuirks
 import juuxel.crafty.item.CItemGroup
 import juuxel.crafty.item.CItemStack
+import net.minecraft.text.TextComponent
 import java.lang.IllegalArgumentException
 import juuxel.crafty.item.Quirk as ItemQuirk2
 import juuxel.crafty.item.Quirks as ItemQuirks
@@ -68,5 +69,13 @@ object Deserializers {
 
             else -> throw IllegalArgumentException("Invalid stack size: $json")
         }
+    }
+
+    object TextComponents : JsonDeserializer<TextComponent> {
+        override fun deserialize(
+            json: JsonElement?,
+            typeOfT: Type?,
+            context: JsonDeserializationContext?
+        ) = TextComponent.Serializer.fromJson(json)
     }
 }
