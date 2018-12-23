@@ -18,13 +18,14 @@ import juuxel.crafty.item.Quirk as ItemQuirk
 import juuxel.crafty.util.Deserializers
 import juuxel.crafty.util.fromJson
 import net.fabricmc.api.ModInitializer
+import net.fabricmc.loader.FabricLoader
 import net.minecraft.text.TextComponent
 import net.minecraft.util.Identifier
 import net.minecraft.util.registry.Registry
 import org.apache.logging.log4j.LogManager
+import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path
-import java.nio.file.Paths
 
 object Crafty : ModInitializer {
     private val logger = LogManager.getLogger()
@@ -36,7 +37,7 @@ object Crafty : ModInitializer {
         registerTypeAdapter(CItemStack.Size::class.java, Deserializers.Size)
         registerTypeAdapter(TextComponent::class.java, Deserializers.TextComponents)
     }.create()
-    private val directory = Paths.get("./crafty/")
+    private val directory = File(FabricLoader.INSTANCE.gameDirectory, "./crafty/").toPath()
     private const val blockDir = "blocks"
     private const val itemDir = "items"
     val craftPacks: Set<String> get() = _craftPacks
