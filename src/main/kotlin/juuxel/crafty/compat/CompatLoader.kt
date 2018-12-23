@@ -15,13 +15,11 @@ object CompatLoader {
         ifPresent("juuxel.watereddown.api.Fluidloggable") {
             logger.info("[Crafty/Compat] Loading Watered Down compat")
             Quirks.register(Identifier("watereddown:fluidloggable"), WDFluidloggableBlock)
-            Quirks.register(Identifier("craftycompat:fluidloggable"), WDFluidloggableBlock)
         }
 
         ifPresent("virtuoel.towelette.api.Fluidloggable") {
             logger.info("[Crafty/Compat] Loading Towelette compat")
             Quirks.register(Identifier("towelette:fluidloggable"), ToweletteFluidloggableBlock)
-            Quirks.register(Identifier("craftycompat:fluidloggable"), ToweletteFluidloggableBlock)
         }
     }
 
