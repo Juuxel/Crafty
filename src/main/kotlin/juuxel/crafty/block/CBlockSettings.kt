@@ -31,6 +31,9 @@ class CBlockSettings : Content<Block.Settings>() {
     var quirk: Quirk = Quirks.None
         private set
 
+    var activate: ActivationEffect = ActivationEffect.default
+        private set
+
     override fun toMc(): Block.Settings =
         FabricBlockSettings.copy(Registry.BLOCK[Identifier(material.base)]).apply {
             if (material.lightLevel != -1)
