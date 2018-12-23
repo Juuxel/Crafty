@@ -27,6 +27,9 @@ class CItemSettings : Content<Item.Settings>() {
     var tooltip: Array<TextComponent> = emptyArray()
         private set
 
+    var glowing: Boolean = false
+        private set
+
     override fun toMc() = Item.Settings().apply {
         tab?.let { itemGroup(it.mc)/*.stackSize(stackSize).durability(durability)*/ }
     }
