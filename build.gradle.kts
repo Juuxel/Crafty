@@ -36,4 +36,5 @@ dependencies {
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modCompile("net.fabricmc:fabric:0.1.1.51")
     modCompile(files("libs/Towelette-1.1.3.0-dev.jar"))
+    modCompile(files("libs/WateredDown-0.3.0-api.jar"))
 }

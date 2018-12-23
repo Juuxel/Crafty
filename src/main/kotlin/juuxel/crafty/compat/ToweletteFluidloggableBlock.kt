@@ -9,8 +9,8 @@ import juuxel.crafty.block.CraftyBlock
 import juuxel.crafty.block.Quirk
 import virtuoel.towelette.api.Fluidloggable
 
-class CraftyFluidloggableBlock(settings: CBlockSettings) : CraftyBlock(settings), Fluidloggable {
+class ToweletteFluidloggableBlock(settings: CBlockSettings) : CraftyBlock(settings), Fluidloggable {
     companion object : Quirk {
-        override val factory = ::CraftyFluidloggableBlock
+        override val factory = ::ToweletteFluidloggableBlock
     }
 }
