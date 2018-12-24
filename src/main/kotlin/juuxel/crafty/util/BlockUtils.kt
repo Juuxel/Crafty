@@ -7,12 +7,9 @@ package juuxel.crafty.util
 import juuxel.crafty.block.CBlockSettings
 import juuxel.crafty.item.CItemStack
 import net.minecraft.block.Block
-import net.minecraft.block.dispenser.ItemDispenserBehavior
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.ItemStack
-import net.minecraft.util.math.BlockPointerImpl
 import net.minecraft.util.math.BlockPos
-import net.minecraft.util.math.Direction
 import net.minecraft.util.shape.VoxelShapes
 import net.minecraft.world.World
 
@@ -36,10 +33,6 @@ object BlockUtils {
         settings.onActivate.run(world, player, pos)
 
         if (world.isClient) return
-
-        settings.onActivate.spawnItems.forEach {
-            ItemDispenserBehavior.dispenseItem(world, it.toMc(), 2, Direction.UP, BlockPointerImpl(world, pos.up()))
-        }
 
         if (settings.onActivate.destroy) {
             world.breakBlock(pos, true)
