@@ -11,7 +11,6 @@ import juuxel.crafty.util.Content
 import net.minecraft.datafixers.NbtOps
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.CompoundTag
-import net.minecraft.util.Identifier
 import net.minecraft.util.registry.Registry
 import java.util.concurrent.ThreadLocalRandom
 
@@ -22,7 +21,7 @@ class CItemStack : Content<ItemStack>() {
     var tag: JsonObject = JsonObject()
         private set
 
-    override fun toMc(): ItemStack = ItemStack(Registry.ITEM.get(Identifier(id)), amount.toInt()).also {
+    override fun toMc(): ItemStack = ItemStack(Registry.ITEM.get(id), amount.toInt()).also {
         it.tag = Dynamic.convert(JsonOps.INSTANCE, NbtOps.INSTANCE, tag) as CompoundTag
     }
 

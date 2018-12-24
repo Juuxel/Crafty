@@ -99,4 +99,9 @@ object Deserializers {
         override fun deserialize(json: JsonElement, typeOfT: Type?, context: JsonDeserializationContext?) =
             Registry.SOUND_EVENT.get(Identifier(json.asString))
     }
+
+    object Id : JsonDeserializer<Identifier> {
+        override fun deserialize(json: JsonElement, typeOfT: Type?, context: JsonDeserializationContext?) =
+            Identifier(json.asString)
+    }
 }

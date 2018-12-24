@@ -14,6 +14,7 @@ import juuxel.crafty.item.CraftyBlockItem
 import juuxel.crafty.item.CItemGroup
 import juuxel.crafty.item.CItemSettings
 import juuxel.crafty.item.CItemStack
+import juuxel.crafty.painting.CraftyPainting
 import juuxel.crafty.item.Quirk as ItemQuirk
 import juuxel.crafty.util.Deserializers
 import juuxel.crafty.util.fromJson
@@ -40,10 +41,12 @@ object Crafty : ModInitializer {
         registerTypeAdapter(TextComponent::class.java, Deserializers.TextComponents)
         registerTypeAdapter(StatusEffectInstance::class.java, Deserializers.StatusEffect)
         registerTypeAdapter(SoundEvent::class.java, Deserializers.Sound)
+        registerTypeAdapter(Identifier::class.java, Deserializers.Id)
     }.create()
     private val directory = File(FabricLoader.INSTANCE.gameDirectory, "./crafty/").toPath()
     private const val blockDir = "blocks"
     private const val itemDir = "items"
+    private const val paintingDir = "paintings"
     val craftPacks: Set<String> get() = _craftPacks
     private val _craftPacks = HashSet<String>()
 
@@ -52,6 +55,7 @@ object Crafty : ModInitializer {
         checkDirs()
         loadDirectory(blockDir, ::loadBlock)
         loadDirectory(itemDir, ::loadItem)
+        loadDirectory(paintingDir, ::loadPaintings)
     }
 
     private fun checkDirs() {
@@ -83,10 +87,10 @@ object Crafty : ModInitializer {
             val settings = gson.fromJson<CBlockSettings>(JsonReader(Files.newBufferedReader(path)))
             val block = settings.quirk.factory(settings)
 
-            Registry.BLOCK.register(Identifier(settings.id), block)
+            Registry.BLOCK.register(settings.id, block)
 
             settings.item?.let { item ->
-                Registry.ITEM.register(Identifier(settings.id), CraftyBlockItem(block, item))
+                Registry.ITEM.register(settings.id, CraftyBlockItem(block, item))
             }
         } catch (e: Exception) {
             logger.error("Error while loading block file $path")
@@ -98,9 +102,19 @@ object Crafty : ModInitializer {
         try {
             val settings = gson.fromJson<CItemSettings>(JsonReader(Files.newBufferedReader(path)))
             val item = settings.quirk.factory(settings)
-            Registry.ITEM.register(Identifier(settings.id), item)
+            Registry.ITEM.register(settings.id, item)
         } catch (e: Exception) {
             logger.error("Error while loading item file $path")
+            e.printStackTrace()
+        }
+    }
+
+    private fun loadPaintings(path: Path) {
+        try {
+            val motive = gson.fromJson<CraftyPainting>(JsonReader(Files.newBufferedReader(path)))
+            Registry.MOTIVE.register(motive.id, motive.toMc())
+        } catch (e: Exception) {
+            logger.error("Error while loading painting file $path")
             e.printStackTrace()
         }
     }
