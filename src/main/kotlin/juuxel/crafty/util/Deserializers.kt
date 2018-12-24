@@ -17,7 +17,10 @@ import juuxel.crafty.item.CItemStack
 import net.minecraft.datafixers.NbtOps
 import net.minecraft.entity.effect.StatusEffectInstance
 import net.minecraft.nbt.CompoundTag
+import net.minecraft.sound.SoundEvent
 import net.minecraft.text.TextComponent
+import net.minecraft.util.Identifier
+import net.minecraft.util.registry.Registry
 import java.lang.IllegalArgumentException
 import juuxel.crafty.item.Quirk as ItemQuirk2
 import juuxel.crafty.item.Quirks as ItemQuirks
@@ -90,5 +93,10 @@ object Deserializers {
             typeOfT: Type?,
             context: JsonDeserializationContext?
         ) = StatusEffectInstance.deserialize(Dynamic.convert(JsonOps.INSTANCE, NbtOps.INSTANCE, json) as CompoundTag)
+    }
+
+    object Sound : JsonDeserializer<SoundEvent> {
+        override fun deserialize(json: JsonElement, typeOfT: Type?, context: JsonDeserializationContext?) =
+            Registry.SOUND_EVENT.get(Identifier(json.asString))
     }
 }

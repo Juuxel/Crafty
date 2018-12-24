@@ -5,6 +5,7 @@
 package juuxel.crafty.item
 
 import juuxel.crafty.util.Content
+import juuxel.crafty.util.WorldEvent
 import net.minecraft.item.Item
 import net.minecraft.text.TextComponent
 
@@ -28,6 +29,9 @@ class CItemSettings : Content<Item.Settings>() {
         private set
 
     var glowing: Boolean = false
+        private set
+
+    var onUse: WorldEvent? = null
         private set
 
     override fun toMc() = Item.Settings().apply {

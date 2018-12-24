@@ -4,6 +4,7 @@
  */
 package juuxel.crafty.item
 
+import juuxel.crafty.util.WorldEvent
 import net.minecraft.entity.effect.StatusEffectInstance
 
 class FoodSettings {
@@ -20,5 +21,8 @@ class FoodSettings {
         private set
 
     var effectChance: Float = 1f
+        private set
+
+    var onConsume: WorldEvent? = null
         private set
 }

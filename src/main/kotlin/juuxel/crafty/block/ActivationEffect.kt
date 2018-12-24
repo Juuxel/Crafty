@@ -5,8 +5,9 @@
 package juuxel.crafty.block
 
 import juuxel.crafty.item.CItemStack
+import juuxel.crafty.util.WorldEvent
 
-class ActivationEffect {
+class ActivationEffect : WorldEvent() {
     var destroy: Boolean = false
         private set
 

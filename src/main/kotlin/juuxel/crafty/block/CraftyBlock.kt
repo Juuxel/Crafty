@@ -37,7 +37,7 @@ open class CraftyBlock(val settings: CBlockSettings) : Block(settings.toMc()) {
     override fun activate(
         state: BlockState, world: World, pos: BlockPos, player: PlayerEntity, hand: Hand, direction: Direction, f1: Float, f2: Float, f3: Float
     ): Boolean {
-        BlockUtils.onActivate(world, pos, settings)
+        BlockUtils.onActivate(world, player, pos, settings)
 
         return super.activate(
             state,
@@ -95,7 +95,7 @@ open class CraftyFallingBlock(val settings: CBlockSettings) : FallingBlock(setti
     override fun activate(
         state: BlockState, world: World, pos: BlockPos, player: PlayerEntity, hand: Hand, direction: Direction, f1: Float, f2: Float, f3: Float
     ): Boolean {
-        BlockUtils.onActivate(world, pos, settings)
+        BlockUtils.onActivate(world, player, pos, settings)
 
         return super.activate(
             state,
