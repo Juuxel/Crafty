@@ -25,6 +25,9 @@ class CMaterial {
     var sounds: SoundGroup? = null
         private set
 
+    var redstonePower: Int = 0
+        private set
+
     enum class SoundGroup(val mc: BlockSoundGroup) {
         Wood(BlockSoundGroup.WOOD),
         Gravel(BlockSoundGroup.GRAVEL),

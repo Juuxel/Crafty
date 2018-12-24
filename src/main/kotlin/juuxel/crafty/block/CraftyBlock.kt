@@ -51,6 +51,14 @@ open class CraftyBlock(val settings: CBlockSettings) : Block(settings.toMc()) {
             f3
         )
     }
+
+    override fun emitsRedstonePower(state: BlockState) = settings.material.redstonePower > 0
+    override fun getWeakRedstonePower(
+        state: BlockState?,
+        view: BlockView?,
+        pos: BlockPos?,
+        direction: Direction?
+    ) = settings.material.redstonePower
 }
 
 class CraftyWaterloggableBlock(settings: CBlockSettings) : CraftyBlock(settings), Waterloggable {
@@ -101,4 +109,12 @@ open class CraftyFallingBlock(val settings: CBlockSettings) : FallingBlock(setti
             f3
         )
     }
+
+    override fun emitsRedstonePower(state: BlockState) = settings.material.redstonePower > 0
+    override fun getWeakRedstonePower(
+        state: BlockState?,
+        view: BlockView?,
+        pos: BlockPos?,
+        direction: Direction?
+    ) = settings.material.redstonePower
 }
