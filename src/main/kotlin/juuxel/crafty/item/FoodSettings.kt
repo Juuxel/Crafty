@@ -4,6 +4,8 @@
  */
 package juuxel.crafty.item
 
+import net.minecraft.entity.effect.StatusEffectInstance
+
 class FoodSettings {
     var hungerRestored: Int = 0
         private set
@@ -12,5 +14,11 @@ class FoodSettings {
         private set
 
     var wolfFood: Boolean = false
+        private set
+
+    var effect: StatusEffectInstance? = null
+        private set
+
+    var effectChance: Float = 1f
         private set
 }

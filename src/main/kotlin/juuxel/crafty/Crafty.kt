@@ -19,6 +19,7 @@ import juuxel.crafty.util.Deserializers
 import juuxel.crafty.util.fromJson
 import net.fabricmc.api.ModInitializer
 import net.fabricmc.loader.FabricLoader
+import net.minecraft.entity.effect.StatusEffectInstance
 import net.minecraft.text.TextComponent
 import net.minecraft.util.Identifier
 import net.minecraft.util.registry.Registry
@@ -36,6 +37,7 @@ object Crafty : ModInitializer {
         registerTypeAdapter(CMaterial.SoundGroup::class.java, Deserializers.SoundGroup)
         registerTypeAdapter(CItemStack.Size::class.java, Deserializers.Size)
         registerTypeAdapter(TextComponent::class.java, Deserializers.TextComponents)
+        registerTypeAdapter(StatusEffectInstance::class.java, Deserializers.StatusEffect)
     }.create()
     private val directory = File(FabricLoader.INSTANCE.gameDirectory, "./crafty/").toPath()
     private const val blockDir = "blocks"

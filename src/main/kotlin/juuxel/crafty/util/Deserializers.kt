@@ -7,11 +7,16 @@ package juuxel.crafty.util
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer
 import com.google.gson.JsonElement
+import com.mojang.datafixers.Dynamic
+import com.mojang.datafixers.types.JsonOps
 import juuxel.crafty.block.CMaterial
 import juuxel.crafty.block.Quirk as BlockQuirk2
 import juuxel.crafty.block.Quirks as BlockQuirks
 import juuxel.crafty.item.CItemGroup
 import juuxel.crafty.item.CItemStack
+import net.minecraft.datafixers.NbtOps
+import net.minecraft.entity.effect.StatusEffectInstance
+import net.minecraft.nbt.CompoundTag
 import net.minecraft.text.TextComponent
 import java.lang.IllegalArgumentException
 import juuxel.crafty.item.Quirk as ItemQuirk2
@@ -77,5 +82,13 @@ object Deserializers {
             typeOfT: Type?,
             context: JsonDeserializationContext?
         ) = TextComponent.Serializer.fromJson(json)
+    }
+
+    object StatusEffect : JsonDeserializer<StatusEffectInstance> {
+        override fun deserialize(
+            json: JsonElement?,
+            typeOfT: Type?,
+            context: JsonDeserializationContext?
+        ) = StatusEffectInstance.deserialize(Dynamic.convert(JsonOps.INSTANCE, NbtOps.INSTANCE, json) as CompoundTag)
     }
 }

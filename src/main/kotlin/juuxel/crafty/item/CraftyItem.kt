@@ -24,6 +24,12 @@ class CraftyItem(val settings: CItemSettings) : Item(settings.toMc()) {
 
 class CraftyFoodItem(val settings: CItemSettings) :
     FoodItem(settings.food!!.hungerRestored, settings.food!!.saturation, settings.food!!.wolfFood, settings.toMc()) {
+    init {
+        settings.food!!.effect?.let {
+            setStatusEffect(it, settings.food!!.effectChance)
+        }
+    }
+
     override fun buildTooltip(stack: ItemStack, world: World?, list: MutableList<TextComponent>, opts: TooltipOptions) =
         ItemUtils.buildTooltip(list, settings)
 
