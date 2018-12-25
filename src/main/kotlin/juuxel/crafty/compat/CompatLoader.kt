@@ -4,7 +4,9 @@
  */
 package juuxel.crafty.compat
 
+import juuxel.crafty.Crafty
 import juuxel.crafty.block.Quirks
+import juuxel.crafty.painting.PaintingModule
 import net.minecraft.util.Identifier
 import org.apache.logging.log4j.LogManager
 
@@ -20,6 +22,11 @@ object CompatLoader {
         ifPresent("virtuoel.towelette.api.Fluidloggable") {
             logger.info("[Crafty/Compat] Loading Towelette compat")
             Quirks.register(Identifier("towelette:fluidloggable"), ToweletteFluidloggableBlock)
+        }
+
+        ifPresent("juuxel.palette.api.PaletteMotive") {
+            logger.info("[Crafty/Compat] Loading Palette compat")
+            Crafty.registerModule(PaintingModule)
         }
     }
 
