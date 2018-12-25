@@ -36,6 +36,14 @@ class CraftyFoodItem(val settings: CItemSettings) :
         settings.food!!.effect?.let {
             setStatusEffect(it, settings.food!!.effectChance)
         }
+
+        if (settings.food!!.alwaysConsumable) {
+            method_7828()
+        }
+
+        if (settings.food!!.consumeQuickly) {
+            method_7829()
+        }
     }
 
     override fun buildTooltip(stack: ItemStack, world: World?, list: MutableList<TextComponent>, opts: TooltipOptions) =

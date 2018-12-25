@@ -25,4 +25,10 @@ class FoodSettings {
 
     var onConsume: WorldEvent? = null
         private set
+
+    var alwaysConsumable: Boolean = false
+        private set
+
+    var consumeQuickly: Boolean = false
+        private set
 }
