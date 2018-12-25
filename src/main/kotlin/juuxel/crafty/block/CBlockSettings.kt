@@ -7,6 +7,7 @@ package juuxel.crafty.block
 import juuxel.crafty.util.Content
 import juuxel.crafty.item.CItemSettings
 import juuxel.crafty.item.CItemStack
+import juuxel.crafty.util.WorldEvent
 import net.fabricmc.fabric.block.FabricBlockSettings
 import net.minecraft.block.Block
 import net.minecraft.util.Identifier
@@ -32,6 +33,12 @@ class CBlockSettings : Content<Block.Settings>() {
         private set
 
     var onActivate: ActivationEffect = ActivationEffect.default
+        private set
+
+    var onPlaced: WorldEvent? = null
+        private set
+
+    var onBreak: WorldEvent? = null
         private set
 
     override fun toMc(): Block.Settings =

@@ -9,9 +9,11 @@ import net.minecraft.block.Block
 import net.minecraft.block.BlockState
 import net.minecraft.block.FallingBlock
 import net.minecraft.block.Waterloggable
+import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.fluid.Fluids
 import net.minecraft.item.ItemPlacementContext
+import net.minecraft.item.ItemStack
 import net.minecraft.state.StateFactory
 import net.minecraft.state.property.Properties
 import net.minecraft.tag.FluidTags
@@ -59,6 +61,27 @@ open class CraftyBlock(val settings: CBlockSettings) : Block(settings.toMc()) {
         pos: BlockPos?,
         direction: Direction?
     ) = settings.material.redstonePower
+
+    override fun onBreak(
+        world: World,
+        pos: BlockPos,
+        state: BlockState?,
+        player: PlayerEntity?
+    ) {
+        super.onBreak(world, pos, state, player)
+        BlockUtils.onBreak(world, pos, player, settings)
+    }
+
+    override fun onPlaced(
+        world: World,
+        pos: BlockPos,
+        state: BlockState?,
+        entity: LivingEntity?,
+        stack: ItemStack?
+    ) {
+        super.onPlaced(world, pos, state, entity, stack)
+        BlockUtils.onPlaced(world, pos, entity as? PlayerEntity, settings)
+    }
 }
 
 class CraftyWaterloggableBlock(settings: CBlockSettings) : CraftyBlock(settings), Waterloggable {
@@ -117,4 +140,25 @@ open class CraftyFallingBlock(val settings: CBlockSettings) : FallingBlock(setti
         pos: BlockPos?,
         direction: Direction?
     ) = settings.material.redstonePower
+
+    override fun onBreak(
+        world: World,
+        pos: BlockPos,
+        state: BlockState?,
+        player: PlayerEntity?
+    ) {
+        super.onBreak(world, pos, state, player)
+        BlockUtils.onBreak(world, pos, player, settings)
+    }
+
+    override fun onPlaced(
+        world: World,
+        pos: BlockPos,
+        state: BlockState?,
+        entity: LivingEntity?,
+        stack: ItemStack?
+    ) {
+        super.onPlaced(world, pos, state, entity, stack)
+        BlockUtils.onPlaced(world, pos, entity as? PlayerEntity, settings)
+    }
 }

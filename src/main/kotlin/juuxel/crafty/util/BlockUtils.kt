@@ -38,4 +38,12 @@ object BlockUtils {
             world.breakBlock(pos, true)
         }
     }
+
+    fun onBreak(world: World, pos: BlockPos, player: PlayerEntity?, settings: CBlockSettings) {
+        settings.onBreak?.run(world, player, pos)
+    }
+
+    fun onPlaced(world: World, pos: BlockPos, player: PlayerEntity?, settings: CBlockSettings) {
+        settings.onPlaced?.run(world, player, pos)
+    }
 }

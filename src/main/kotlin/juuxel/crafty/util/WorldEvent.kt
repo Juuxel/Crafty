@@ -31,13 +31,13 @@ open class WorldEvent {
     var particles: Array<CParticle> = emptyArray()
         private set
 
-    fun run(world: World, player: PlayerEntity, pos: BlockPos = player.pos) {
+    fun run(world: World, player: PlayerEntity?, pos: BlockPos = player!!.pos) {
         sound?.let {
             world.playSound(player, pos, it, SoundCategory.BLOCK, 1f, 1f)
         }
 
         statusEffects.forEach {
-            player.addPotionEffect(it)
+            player?.addPotionEffect(it)
         }
 
         for (p in particles) {
