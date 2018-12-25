@@ -4,8 +4,12 @@
  */
 package juuxel.crafty.util
 
+import com.mojang.brigadier.StringReader
 import juuxel.crafty.item.CItemStack
+import juuxel.crafty.particle.CParticle
 import net.minecraft.block.dispenser.ItemDispenserBehavior
+import net.minecraft.command.arguments.ParticleArgumentType
+import net.minecraft.entity.effect.StatusEffectInstance
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.sound.SoundCategory
 import net.minecraft.sound.SoundEvent
@@ -21,9 +25,29 @@ open class WorldEvent {
     var spawnItems: Array<CItemStack> = emptyArray()
         private set
 
+    var statusEffects: Array<StatusEffectInstance> = emptyArray()
+        private set
+
+    var particles: Array<CParticle> = emptyArray()
+        private set
+
     fun run(world: World, player: PlayerEntity, pos: BlockPos = player.pos) {
         sound?.let {
             world.playSound(player, pos, it, SoundCategory.BLOCK, 1f, 1f)
+        }
+
+        statusEffects.forEach {
+            player.addPotionEffect(it)
+        }
+
+        for (p in particles) {
+            world.addParticle(
+                ParticleArgumentType.method_9418(StringReader(p.particle)),
+                pos.x.toDouble() + p.xOffset + 0.5,
+                pos.y.toDouble() + p.yOffset,
+                pos.z.toDouble() + p.zOffset + 0.5,
+                p.velocityX, p.velocityY, p.velocityZ
+            )
         }
 
         // Server-side code below
