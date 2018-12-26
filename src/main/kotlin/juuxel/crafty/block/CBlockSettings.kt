@@ -54,6 +54,6 @@ class CBlockSettings : Content<Block.Settings> {
             if (material.resistance != -1f)
                 hardness(material.resistance)
 
-            material.sounds?.let { sounds(it.mc) }
+            material.sounds?.let { sounds(it) }
         }.build()
 }

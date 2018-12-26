@@ -13,10 +13,12 @@ import juuxel.crafty.block.CMaterial
 import juuxel.crafty.block.Quirk as BlockQuirk2
 import juuxel.crafty.block.Quirks as BlockQuirks
 import juuxel.crafty.item.CItemStack
+import juuxel.crafty.sounds.SoundGroup
 import net.minecraft.datafixers.NbtOps
 import net.minecraft.entity.effect.StatusEffectInstance
 import net.minecraft.item.ItemGroup
 import net.minecraft.nbt.CompoundTag
+import net.minecraft.sound.BlockSoundGroup
 import net.minecraft.sound.SoundEvent
 import net.minecraft.text.TextComponent
 import net.minecraft.util.Identifier
@@ -43,12 +45,12 @@ object Deserializers {
         ) = ItemGroup.GROUPS.first { it.method_7751() == json.asString }
     }
 
-    object SoundGroup : JsonDeserializer<CMaterial.SoundGroup> {
+    object SoundGroups : JsonDeserializer<BlockSoundGroup> {
         override fun deserialize(
             json: JsonElement,
             typeOfT: Type?,
             context: JsonDeserializationContext?
-        ) = CMaterial.SoundGroup.fromString(json.asString)
+        ) = SoundGroup[Identifier(json.asString)]
     }
 
     object ItemQuirk : JsonDeserializer<ItemQuirk2> {

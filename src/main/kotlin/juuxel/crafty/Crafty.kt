@@ -6,14 +6,16 @@ package juuxel.crafty
 
 import com.google.gson.GsonBuilder
 import juuxel.crafty.block.BlockModule
-import juuxel.crafty.block.CMaterial
 import juuxel.crafty.compat.CompatLoader
 import juuxel.crafty.item.*
+import juuxel.crafty.sounds.SoundEventModule
+import juuxel.crafty.sounds.SoundGroupModule
 import juuxel.crafty.util.Deserializers
 import net.fabricmc.api.ModInitializer
 import net.fabricmc.loader.FabricLoader
 import net.minecraft.entity.effect.StatusEffectInstance
 import net.minecraft.item.ItemGroup
+import net.minecraft.sound.BlockSoundGroup
 import net.minecraft.sound.SoundEvent
 import net.minecraft.text.TextComponent
 import net.minecraft.util.Identifier
@@ -29,7 +31,7 @@ object Crafty : ModInitializer {
         registerTypeAdapter(BlockQuirk::class.java, Deserializers.BlockQuirk)
         registerTypeAdapter(ItemQuirk::class.java, Deserializers.ItemQuirk)
         registerTypeAdapter(ItemGroup::class.java, Deserializers.ItemGroups)
-        registerTypeAdapter(CMaterial.SoundGroup::class.java, Deserializers.SoundGroup)
+        registerTypeAdapter(BlockSoundGroup::class.java, Deserializers.SoundGroups)
         registerTypeAdapter(CItemStack.Size::class.java, Deserializers.Size)
         registerTypeAdapter(TextComponent::class.java, Deserializers.TextComponents)
         registerTypeAdapter(StatusEffectInstance::class.java, Deserializers.StatusEffect)
@@ -38,7 +40,7 @@ object Crafty : ModInitializer {
     }.create()
     private val directory = File(FabricLoader.INSTANCE.gameDirectory, "./crafty/").toPath()
     private val contentPacks = HashSet<String>()
-    private val modules = mutableSetOf(ItemGroupModule, BlockModule, ItemModule)
+    private val modules = mutableSetOf(ItemGroupModule, SoundEventModule, SoundGroupModule, BlockModule, ItemModule)
 
     override fun onInitialize() {
         CompatLoader.load()
