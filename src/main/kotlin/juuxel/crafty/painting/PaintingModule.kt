@@ -8,6 +8,7 @@ import com.google.gson.stream.JsonReader
 import juuxel.crafty.Crafty
 import juuxel.crafty.Module
 import juuxel.crafty.util.fromJson
+import net.minecraft.util.Identifier
 import net.minecraft.util.registry.Registry
 import org.apache.logging.log4j.LogManager
 import java.nio.file.Files
@@ -17,10 +18,10 @@ object PaintingModule : Module {
     private val logger = LogManager.getLogger()
     override val name = "paintings"
 
-    override fun loadContent(path: Path) {
+    override fun loadContent(contentPack: String, path: Path) {
         try {
             val motive = Crafty.gson.fromJson<CraftyPainting>(JsonReader(Files.newBufferedReader(path)))
-            Registry.MOTIVE.register(motive.id, motive.toMc())
+            Registry.MOTIVE.register(Identifier(contentPack, path.toFile().nameWithoutExtension), motive.toMc())
         } catch (e: Exception) {
             logger.error("Error while loading painting file $path")
             e.printStackTrace()

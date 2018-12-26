@@ -11,10 +11,14 @@ import juuxel.crafty.util.Content
 import net.minecraft.datafixers.NbtOps
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.CompoundTag
+import net.minecraft.util.Identifier
 import net.minecraft.util.registry.Registry
 import java.util.concurrent.ThreadLocalRandom
 
-class CItemStack : Content<ItemStack>() {
+class CItemStack : Content<ItemStack> {
+    lateinit var id: Identifier
+        private set
+
     var amount: Size = Size()
         private set
 

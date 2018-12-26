@@ -65,7 +65,7 @@ object Crafty : ModInitializer {
                 if (Files.isDirectory(l2) && l2.fileName.toString() == dir)
                     Files.newDirectoryStream(l2).forEach { file ->
                         if (file.toFile().extension == "json") {
-                            module.loadContent(file)
+                            module.loadContent(pack, file)
                         }
                     }
             }

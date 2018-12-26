@@ -13,7 +13,7 @@ import net.minecraft.block.Block
 import net.minecraft.util.Identifier
 import net.minecraft.util.registry.Registry
 
-class CBlockSettings : Content<Block.Settings>() {
+class CBlockSettings : Content<Block.Settings> {
     lateinit var material: CMaterial
         private set
 

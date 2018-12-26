@@ -8,7 +8,7 @@ import juuxel.crafty.util.Content
 import juuxel.palette.api.PaletteMotive
 import net.minecraft.util.Identifier
 
-class CraftyPainting : Content<PaletteMotive>() {
+class CraftyPainting : Content<PaletteMotive> {
     lateinit var texture: Identifier
         private set
 

@@ -8,6 +8,7 @@ import com.google.gson.stream.JsonReader
 import juuxel.crafty.Crafty
 import juuxel.crafty.Module
 import juuxel.crafty.util.fromJson
+import net.minecraft.util.Identifier
 import org.apache.logging.log4j.LogManager
 import java.nio.file.Files
 import java.nio.file.Path
@@ -16,10 +17,10 @@ object ItemGroupModule : Module {
     private val logger = LogManager.getLogger()
     override val name = "item_groups"
 
-    override fun loadContent(path: Path) {
+    override fun loadContent(contentPack: String, path: Path) {
         try {
             val settings = Crafty.gson.fromJson<CItemGroup>(JsonReader(Files.newBufferedReader(path)))
-            settings.toMc()
+            settings.toMc()(Identifier(contentPack, path.toFile().nameWithoutExtension))
         } catch (e: Exception) {
             logger.error("Error while loading item group file $path")
             e.printStackTrace()

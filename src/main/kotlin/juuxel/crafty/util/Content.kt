@@ -4,11 +4,6 @@
  */
 package juuxel.crafty.util
 
-import net.minecraft.util.Identifier
-
-abstract class Content<out T> {
-    lateinit var id: Identifier
-        private set
-
-    abstract fun toMc(): T
+interface Content<out T> {
+    fun toMc(): T
 }

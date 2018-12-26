@@ -8,6 +8,7 @@ import com.google.gson.stream.JsonReader
 import juuxel.crafty.Crafty
 import juuxel.crafty.Module
 import juuxel.crafty.util.fromJson
+import net.minecraft.util.Identifier
 import net.minecraft.util.registry.Registry
 import org.apache.logging.log4j.LogManager
 import java.nio.file.Files
@@ -17,11 +18,11 @@ object ItemModule : Module {
     private val logger = LogManager.getLogger()
     override val name = "items"
 
-    override fun loadContent(path: Path) {
+    override fun loadContent(contentPack: String, path: Path) {
         try {
             val settings = Crafty.gson.fromJson<CItemSettings>(JsonReader(Files.newBufferedReader(path)))
             val item = settings.quirk.factory(settings)
-            Registry.ITEM.register(settings.id, item)
+            Registry.ITEM.register(Identifier(contentPack, path.toFile().nameWithoutExtension), item)
         } catch (e: Exception) {
             logger.error("Error while loading item file $path")
             e.printStackTrace()

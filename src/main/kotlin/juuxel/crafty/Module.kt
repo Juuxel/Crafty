@@ -9,5 +9,5 @@ import java.nio.file.Path
 interface Module {
     val name: String
 
-    fun loadContent(path: Path)
+    fun loadContent(contentPack: String, path: Path)
 }

@@ -10,7 +10,7 @@ import net.minecraft.item.Item
 import net.minecraft.item.ItemGroup
 import net.minecraft.text.TextComponent
 
-class CItemSettings : Content<Item.Settings>() {
+class CItemSettings : Content<Item.Settings> {
     var tab: ItemGroup? = null
         private set
 
