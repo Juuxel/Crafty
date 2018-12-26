@@ -32,7 +32,7 @@ class CBlockSettings : Content<Block.Settings>() {
     var quirk: Quirk = Quirks.None
         private set
 
-    var onActivate: ActivationEffect = ActivationEffect.default
+    var onActivate: WorldEvent.OnBlockActivation? = null
         private set
 
     var onPlaced: WorldEvent? = null

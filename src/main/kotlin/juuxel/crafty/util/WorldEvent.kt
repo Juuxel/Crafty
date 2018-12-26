@@ -13,6 +13,7 @@ import net.minecraft.entity.effect.StatusEffectInstance
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.sound.SoundCategory
 import net.minecraft.sound.SoundEvent
+import net.minecraft.text.TextComponent
 import net.minecraft.util.math.BlockPointerImpl
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
@@ -31,7 +32,13 @@ open class WorldEvent {
     var particles: Array<CParticle> = emptyArray()
         private set
 
-    fun run(world: World, player: PlayerEntity?, pos: BlockPos = player!!.pos) {
+    var chatMessages: Array<TextComponent> = emptyArray()
+        private set
+
+    var actionBarMessage: TextComponent? = null
+        private set
+
+    open fun run(world: World, player: PlayerEntity?, pos: BlockPos = player!!.pos) {
         sound?.let {
             world.playSound(player, pos, it, SoundCategory.BLOCK, 1f, 1f)
         }
@@ -55,6 +62,28 @@ open class WorldEvent {
 
         spawnItems.forEach {
             ItemDispenserBehavior.dispenseItem(world, it.toMc(), 2, Direction.UP, BlockPointerImpl(world, pos.up()))
+        }
+
+        chatMessages.forEach {
+            player?.addChatMessage(it, false)
+        }
+
+        actionBarMessage?.let {
+            player?.addChatMessage(it, true)
+        }
+    }
+
+    class OnBlockActivation : WorldEvent() {
+        var destroy: Boolean = false
+            private set
+
+        override fun run(world: World, player: PlayerEntity?, pos: BlockPos) {
+            super.run(world, player, pos)
+
+            if (world.isClient) return
+            if (destroy) {
+                world.breakBlock(pos, true)
+            }
         }
     }
 }

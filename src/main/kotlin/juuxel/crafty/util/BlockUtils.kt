@@ -30,13 +30,7 @@ object BlockUtils {
         }.reduce(VoxelShapes::union)
 
     fun onActivate(world: World, player: PlayerEntity, pos: BlockPos, settings: CBlockSettings) {
-        settings.onActivate.run(world, player, pos)
-
-        if (world.isClient) return
-
-        if (settings.onActivate.destroy) {
-            world.breakBlock(pos, true)
-        }
+        settings.onActivate?.run(world, player, pos)
     }
 
     fun onBreak(world: World, pos: BlockPos, player: PlayerEntity?, settings: CBlockSettings) {
