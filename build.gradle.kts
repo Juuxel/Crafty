@@ -28,13 +28,13 @@ tasks.withType<KotlinCompile> {
 dependencies {
 	compile(kotlin("stdlib-jdk8"))
 	minecraft("com.mojang:minecraft:18w50a")
-	mappings("net.fabricmc:yarn:18w50a.57")
-	modCompile("net.fabricmc:fabric-loader:0.2.0.70")
+	mappings("net.fabricmc:yarn:18w50a.71")
+	modCompile("net.fabricmc:fabric-loader:0.3.0.75")
     modCompile("net.fabricmc:fabric-language-kotlin:1.3.10-26")
     compileOnly("net.fabricmc:fabric-language-kotlin:1.3.10-26")
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
-	modCompile("net.fabricmc:fabric:0.1.1.51")
+	modCompile("net.fabricmc:fabric:0.1.2.64")
     modCompile(files("libs/Towelette-1.1.3.0-dev.jar"))
     modCompile(files("libs/WateredDown-0.3.0-dev.jar"))
     modCompile(files("../Palette/build/libs/Palette-0.1.0-dev.jar"))

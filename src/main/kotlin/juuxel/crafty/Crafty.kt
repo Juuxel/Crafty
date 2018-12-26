@@ -38,7 +38,7 @@ object Crafty : ModInitializer {
     }.create()
     private val directory = File(FabricLoader.INSTANCE.gameDirectory, "./crafty/").toPath()
     private val contentPacks = HashSet<String>()
-    private val modules = mutableSetOf(BlockModule, ItemModule)
+    private val modules = mutableSetOf(ItemGroupModule, BlockModule, ItemModule)
 
     override fun onInitialize() {
         CompatLoader.load()
