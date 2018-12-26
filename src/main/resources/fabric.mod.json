@@ -2,7 +2,7 @@
   "id": "crafty",
   "name": "Crafty",
   "description": "Custom blocks and items using JSON",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "side": "universal",
   "initializer": "juuxel.crafty.Crafty",
   "requires": {
