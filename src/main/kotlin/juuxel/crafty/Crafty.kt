@@ -37,8 +37,7 @@ object Crafty : ModInitializer {
         registerTypeAdapter(Identifier::class.java, Deserializers.Id)
     }.create()
     private val directory = File(FabricLoader.INSTANCE.gameDirectory, "./crafty/").toPath()
-    val craftPacks: Set<String> get() = _craftPacks
-    private val _craftPacks = HashSet<String>()
+    private val contentPacks = HashSet<String>()
     private val modules = mutableSetOf(BlockModule, ItemModule)
 
     override fun onInitialize() {
@@ -60,8 +59,8 @@ object Crafty : ModInitializer {
 
         Files.newDirectoryStream(directory).forEach {
             val pack = it.fileName.toString()
-            _craftPacks += pack
-            logger.info("[Crafty] Loading craftpack $pack: $dir")
+            contentPacks += pack
+            logger.info("[Crafty] Loading content pack $pack: $dir")
             if (Files.isDirectory(it)) Files.newDirectoryStream(it).forEach { l2 ->
                 if (Files.isDirectory(l2) && l2.fileName.toString() == dir)
                     Files.newDirectoryStream(l2).forEach { file ->
