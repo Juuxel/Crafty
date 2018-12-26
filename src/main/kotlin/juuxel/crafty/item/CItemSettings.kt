@@ -7,10 +7,11 @@ package juuxel.crafty.item
 import juuxel.crafty.util.Content
 import juuxel.crafty.util.WorldEvent
 import net.minecraft.item.Item
+import net.minecraft.item.ItemGroup
 import net.minecraft.text.TextComponent
 
 class CItemSettings : Content<Item.Settings>() {
-    var tab: CItemGroup? = null
+    var tab: ItemGroup? = null
         private set
 
     var quirk: Quirk = Quirks.None
@@ -35,6 +36,6 @@ class CItemSettings : Content<Item.Settings>() {
         private set
 
     override fun toMc() = Item.Settings().apply {
-        tab?.let { itemGroup(it.mc)/*.stackSize(stackSize).durability(durability)*/ }
+        tab?.let { itemGroup(it) }/*.stackSize(stackSize).durability(durability)*/
     }
 }

@@ -13,6 +13,7 @@ import juuxel.crafty.util.Deserializers
 import net.fabricmc.api.ModInitializer
 import net.fabricmc.loader.FabricLoader
 import net.minecraft.entity.effect.StatusEffectInstance
+import net.minecraft.item.ItemGroup
 import net.minecraft.sound.SoundEvent
 import net.minecraft.text.TextComponent
 import net.minecraft.util.Identifier
@@ -27,7 +28,7 @@ object Crafty : ModInitializer {
     internal val gson = GsonBuilder().apply {
         registerTypeAdapter(BlockQuirk::class.java, Deserializers.BlockQuirk)
         registerTypeAdapter(ItemQuirk::class.java, Deserializers.ItemQuirk)
-        registerTypeAdapter(CItemGroup::class.java, Deserializers.CreativeTab)
+        registerTypeAdapter(ItemGroup::class.java, Deserializers.ItemGroups)
         registerTypeAdapter(CMaterial.SoundGroup::class.java, Deserializers.SoundGroup)
         registerTypeAdapter(CItemStack.Size::class.java, Deserializers.Size)
         registerTypeAdapter(TextComponent::class.java, Deserializers.TextComponents)

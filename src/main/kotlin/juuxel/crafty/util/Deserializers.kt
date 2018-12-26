@@ -12,10 +12,10 @@ import com.mojang.datafixers.types.JsonOps
 import juuxel.crafty.block.CMaterial
 import juuxel.crafty.block.Quirk as BlockQuirk2
 import juuxel.crafty.block.Quirks as BlockQuirks
-import juuxel.crafty.item.CItemGroup
 import juuxel.crafty.item.CItemStack
 import net.minecraft.datafixers.NbtOps
 import net.minecraft.entity.effect.StatusEffectInstance
+import net.minecraft.item.ItemGroup
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.sound.SoundEvent
 import net.minecraft.text.TextComponent
@@ -35,12 +35,12 @@ object Deserializers {
         ) = BlockQuirks.fromString(json.asString)
     }
 
-    object CreativeTab : JsonDeserializer<CItemGroup> {
+    object ItemGroups : JsonDeserializer<ItemGroup> {
         override fun deserialize(
             json: JsonElement,
             typeOfT: Type?,
             context: JsonDeserializationContext?
-        ) = CItemGroup.fromString(json.asString)
+        ) = ItemGroup.GROUPS.first { it.method_7751() == json.asString }
     }
 
     object SoundGroup : JsonDeserializer<CMaterial.SoundGroup> {
