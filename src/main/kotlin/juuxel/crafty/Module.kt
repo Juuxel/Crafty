@@ -4,10 +4,11 @@
  */
 package juuxel.crafty
 
-import java.nio.file.Path
+import juuxel.crafty.util.FileName
+import java.io.Reader
 
 interface Module {
     val name: String
 
-    fun loadContent(contentPack: String, path: Path)
+    fun loadContent(contentPack: String, reader: Reader, fileName: FileName)
 }

@@ -4,6 +4,8 @@
  */
 package juuxel.crafty
 
+import a2u.tn.utils.json.JsonParser
+import a2u.tn.utils.json.JsonSerializer
 import com.google.gson.GsonBuilder
 import juuxel.crafty.block.BlockModule
 import juuxel.crafty.compat.CompatLoader
@@ -11,6 +13,7 @@ import juuxel.crafty.item.*
 import juuxel.crafty.sounds.SoundEventModule
 import juuxel.crafty.sounds.SoundGroupModule
 import juuxel.crafty.util.Deserializers
+import juuxel.crafty.util.FileName
 import net.fabricmc.api.ModInitializer
 import net.fabricmc.loader.FabricLoader
 import net.minecraft.entity.effect.StatusEffectInstance
@@ -21,6 +24,7 @@ import net.minecraft.text.TextComponent
 import net.minecraft.util.Identifier
 import org.apache.logging.log4j.LogManager
 import java.io.File
+import java.io.StringReader
 import java.nio.file.Files
 import juuxel.crafty.block.Quirk as BlockQuirk
 import juuxel.crafty.item.Quirk as ItemQuirk
@@ -66,8 +70,20 @@ object Crafty : ModInitializer {
             if (Files.isDirectory(it)) Files.newDirectoryStream(it).forEach { l2 ->
                 if (Files.isDirectory(l2) && l2.fileName.toString() == dir)
                     Files.newDirectoryStream(l2).forEach { file ->
-                        if (file.toFile().extension == "json") {
-                            module.loadContent(pack, file)
+                        when (file.toFile().extension) {
+                            "json" -> module.loadContent(
+                                pack,
+                                Files.newBufferedReader(file),
+                                FileName.fromFile(file.toFile())
+                            )
+
+                            "json5" -> module.loadContent(
+                                pack,
+                                StringReader(JsonSerializer.toJson(JsonParser.parse(
+                                    file.toFile().readText()
+                                ))),
+                                FileName.fromFile(file.toFile())
+                            )
                         }
                     }
             }

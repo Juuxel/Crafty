@@ -8,29 +8,29 @@ import com.google.gson.stream.JsonReader
 import juuxel.crafty.Crafty
 import juuxel.crafty.Module
 import juuxel.crafty.item.CraftyBlockItem
+import juuxel.crafty.util.FileName
 import juuxel.crafty.util.fromJson
 import net.minecraft.util.Identifier
 import net.minecraft.util.registry.Registry
 import org.apache.logging.log4j.LogManager
-import java.nio.file.Files
-import java.nio.file.Path
+import java.io.Reader
 
 object BlockModule : Module {
     private val logger = LogManager.getLogger()
     override val name = "blocks"
 
-    override fun loadContent(contentPack: String, path: Path) {
+    override fun loadContent(contentPack: String, reader: Reader, fileName: FileName) {
         try {
-            val settings = Crafty.gson.fromJson<CBlockSettings>(JsonReader(Files.newBufferedReader(path)))
+            val settings = Crafty.gson.fromJson<CBlockSettings>(JsonReader(reader))
             val block = settings.quirk.factory(settings)
 
-            Registry.BLOCK.register(Identifier(contentPack, path.toFile().nameWithoutExtension), block)
+            Registry.BLOCK.register(Identifier(contentPack, fileName.name), block)
 
             settings.item?.let { item ->
-                Registry.ITEM.register(Identifier(contentPack, path.toFile().nameWithoutExtension), CraftyBlockItem(block, item))
+                Registry.ITEM.register(Identifier(contentPack, fileName.name), CraftyBlockItem(block, item))
             }
         } catch (e: Exception) {
-            logger.error("Error while loading block file $path")
+            logger.error("Error while loading block file ${fileName.fullPath}")
             e.printStackTrace()
         }
     }
