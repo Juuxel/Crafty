@@ -49,7 +49,7 @@ open class WorldEvent {
 
         for (p in particles) {
             world.addParticle(
-                ParticleArgumentType.method_9418(StringReader(p.particle)),
+                ParticleArgumentType.readParameters(StringReader(p.particle)),
                 pos.x.toDouble() + p.xOffset + 0.5,
                 pos.y.toDouble() + p.yOffset,
                 pos.z.toDouble() + p.zOffset + 0.5,
