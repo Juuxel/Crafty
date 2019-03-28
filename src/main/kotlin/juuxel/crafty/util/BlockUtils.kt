@@ -26,7 +26,7 @@ object BlockUtils {
 
     fun getShape(settings: CBlockSettings) =
         settings.shape.map {
-            Block.createCubeShape(it.from[0], it.from[1], it.from[2], it.to[0], it.to[1], it.to[2])
+            Block.createCuboidShape(it.from[0], it.from[1], it.from[2], it.to[0], it.to[1], it.to[2])
         }.reduce(VoxelShapes::union)
 
     fun onActivate(world: World, player: PlayerEntity, pos: BlockPos, settings: CBlockSettings) {

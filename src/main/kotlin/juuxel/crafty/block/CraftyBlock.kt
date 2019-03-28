@@ -9,26 +9,32 @@ import net.minecraft.block.Block
 import net.minecraft.block.BlockState
 import net.minecraft.block.FallingBlock
 import net.minecraft.block.Waterloggable
+import net.minecraft.entity.FallingBlockEntity
 import net.minecraft.entity.LivingEntity
+import net.minecraft.entity.VerticalEntityPosition
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.fluid.Fluids
 import net.minecraft.item.ItemPlacementContext
 import net.minecraft.item.ItemStack
+import net.minecraft.server.world.ServerWorld
 import net.minecraft.state.StateFactory
 import net.minecraft.state.property.Properties
 import net.minecraft.tag.FluidTags
 import net.minecraft.util.Hand
+import net.minecraft.util.hit.BlockHitResult
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
+import net.minecraft.util.shape.VoxelShape
 import net.minecraft.world.BlockView
 import net.minecraft.world.World
 import net.minecraft.world.loot.context.LootContext
 
 open class CraftyBlock(val settings: CBlockSettings) : Block(settings.toMc()) {
-    override fun getBoundingShape(
+    override fun getOutlineShape(
         blockState_1: BlockState?,
         blockView_1: BlockView?,
-        blockPos_1: BlockPos?
+        blockPos_1: BlockPos?,
+        verticalEntityPosition_1: VerticalEntityPosition?
     ) = BlockUtils.getShape(settings)
 
     override fun getDroppedStacks(
@@ -37,7 +43,7 @@ open class CraftyBlock(val settings: CBlockSettings) : Block(settings.toMc()) {
     ) = BlockUtils.getDrops(super.getDroppedStacks(state, builder), settings)
 
     override fun activate(
-        state: BlockState, world: World, pos: BlockPos, player: PlayerEntity, hand: Hand, direction: Direction, f1: Float, f2: Float, f3: Float
+        state: BlockState, world: World, pos: BlockPos, player: PlayerEntity, hand: Hand, hitResult: BlockHitResult
     ): Boolean {
         BlockUtils.onActivate(world, player, pos, settings)
 
@@ -47,10 +53,7 @@ open class CraftyBlock(val settings: CBlockSettings) : Block(settings.toMc()) {
             pos,
             player,
             hand,
-            direction,
-            f1,
-            f2,
-            f3
+            hitResult
         )
     }
 
@@ -99,15 +102,16 @@ class CraftyWaterloggableBlock(settings: CBlockSettings) : CraftyBlock(settings)
     }
 
     override fun getPlacementState(context: ItemPlacementContext): BlockState? =
-        defaultState.with(Properties.WATERLOGGED, context.world.getFluidState(context.pos).fluid.matches(
+        defaultState.with(Properties.WATERLOGGED, context.world.getFluidState(context.blockPos).fluid.matches(
             FluidTags.WATER))
 }
 
 open class CraftyFallingBlock(val settings: CBlockSettings) : FallingBlock(settings.toMc()) {
-    override fun getBoundingShape(
+    override fun getOutlineShape(
         blockState_1: BlockState?,
         blockView_1: BlockView?,
-        blockPos_1: BlockPos?
+        blockPos_1: BlockPos?,
+        verticalEntityPosition_1: VerticalEntityPosition?
     ) = BlockUtils.getShape(settings)
 
     override fun getDroppedStacks(
@@ -116,7 +120,7 @@ open class CraftyFallingBlock(val settings: CBlockSettings) : FallingBlock(setti
     ) = BlockUtils.getDrops(super.getDroppedStacks(state, builder), settings)
 
     override fun activate(
-        state: BlockState, world: World, pos: BlockPos, player: PlayerEntity, hand: Hand, direction: Direction, f1: Float, f2: Float, f3: Float
+        state: BlockState, world: World, pos: BlockPos, player: PlayerEntity, hand: Hand, hitResult: BlockHitResult
     ): Boolean {
         BlockUtils.onActivate(world, player, pos, settings)
 
@@ -126,10 +130,7 @@ open class CraftyFallingBlock(val settings: CBlockSettings) : FallingBlock(setti
             pos,
             player,
             hand,
-            direction,
-            f1,
-            f2,
-            f3
+            hitResult
         )
     }
 
@@ -160,5 +161,31 @@ open class CraftyFallingBlock(val settings: CBlockSettings) : FallingBlock(setti
     ) {
         super.onPlaced(world, pos, state, entity, stack)
         BlockUtils.onPlaced(world, pos, entity as? PlayerEntity, settings)
+    }
+
+    override fun configureFallingBlockEntity(entity: FallingBlockEntity) {
+        super.configureFallingBlockEntity(entity)
+
+        if (settings.falling?.hurtsEntities == true)
+            entity.setHurtEntities(true)
+    }
+
+    override fun onLanding(
+        world: World,
+        pos: BlockPos,
+        fallingBlockState: BlockState,
+        currentStateInPos: BlockState
+    ) {
+        settings.falling?.onLanding?.run(world, null, pos)
+
+        if (world.random.nextDouble() < settings.falling!!.breakingChance) {
+            settings.falling?.onBreaking?.run(world, null, pos)
+
+            settings.falling?.breakingState?.let {
+                if (world is ServerWorld) {
+                    it.setBlockState(world, pos, 3)
+                }
+            }
+        }
     }
 }

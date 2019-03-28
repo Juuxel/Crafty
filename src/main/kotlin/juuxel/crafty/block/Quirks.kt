@@ -6,14 +6,14 @@ package juuxel.crafty.block
 
 import net.minecraft.block.Block
 import net.minecraft.util.Identifier
-import net.minecraft.util.registry.DefaultMappedRegistry
+import net.minecraft.util.registry.DefaultedRegistry
 import net.minecraft.util.registry.Registry
 
 enum class Quirks(override val factory: (CBlockSettings) -> Block) : Quirk {
     None(::CraftyBlock), Waterloggable(::CraftyWaterloggableBlock),
     Falling(::CraftyFallingBlock);
 
-    companion object : DefaultMappedRegistry<Quirk>("none") {
+    companion object : DefaultedRegistry<Quirk>("none") {
         init {
             Registry.register(this, "none", None)
             Registry.register(this, "waterloggable", Waterloggable)

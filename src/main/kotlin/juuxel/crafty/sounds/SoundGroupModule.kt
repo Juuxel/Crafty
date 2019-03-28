@@ -20,7 +20,7 @@ object SoundGroupModule : Module {
     override fun loadContent(contentPack: String, reader: Reader, fileName: FileName) {
         try {
             val group = Crafty.gson.fromJson<SoundGroup>(JsonReader(reader))
-            SoundGroup.register(Identifier(contentPack, fileName.name), group.toMc())
+            SoundGroup.add(Identifier(contentPack, fileName.name), group.toMc())
         } catch (e: Exception) {
             logger.error("Error while loading sound group file ${fileName.fullPath}")
             e.printStackTrace()

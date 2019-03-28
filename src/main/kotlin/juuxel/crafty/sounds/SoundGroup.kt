@@ -8,7 +8,7 @@ import juuxel.crafty.util.Content
 import net.minecraft.sound.BlockSoundGroup
 import net.minecraft.sound.BlockSoundGroup.*
 import net.minecraft.sound.SoundEvent
-import net.minecraft.util.registry.DefaultMappedRegistry
+import net.minecraft.util.registry.DefaultedRegistry
 
 class SoundGroup : Content<BlockSoundGroup> {
     var volume: Float = 1f
@@ -25,7 +25,7 @@ class SoundGroup : Content<BlockSoundGroup> {
 
     override fun toMc() = BlockSoundGroup(volume, pitch, breakSound, stepSound, placeSound, hitSound, fallSound)
 
-    companion object : DefaultMappedRegistry<BlockSoundGroup>("stone") {
+    companion object : DefaultedRegistry<BlockSoundGroup>("stone") {
         init {
             register(this, "minecraft:wood", WOOD)
             register(this, "minecraft:gravel", GRAVEL)

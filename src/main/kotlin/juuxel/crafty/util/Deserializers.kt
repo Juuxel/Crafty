@@ -4,16 +4,19 @@
  */
 package juuxel.crafty.util
 
+import com.google.gson.GsonBuilder
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer
 import com.google.gson.JsonElement
+import com.mojang.brigadier.StringReader
 import com.mojang.datafixers.Dynamic
 import com.mojang.datafixers.types.JsonOps
-import juuxel.crafty.block.CMaterial
-import juuxel.crafty.block.Quirk as BlockQuirk2
+import juuxel.crafty.block.Quirk as BlockQuirk
 import juuxel.crafty.block.Quirks as BlockQuirks
 import juuxel.crafty.item.CItemStack
 import juuxel.crafty.sounds.SoundGroup
+import net.minecraft.command.arguments.BlockArgument
+import net.minecraft.command.arguments.BlockArgumentType
 import net.minecraft.datafixers.NbtOps
 import net.minecraft.entity.effect.StatusEffectInstance
 import net.minecraft.item.ItemGroup
@@ -24,12 +27,25 @@ import net.minecraft.text.TextComponent
 import net.minecraft.util.Identifier
 import net.minecraft.util.registry.Registry
 import java.lang.IllegalArgumentException
-import juuxel.crafty.item.Quirk as ItemQuirk2
+import juuxel.crafty.item.Quirk as ItemQuirk
 import juuxel.crafty.item.Quirks as ItemQuirks
 import java.lang.reflect.Type
 
 object Deserializers {
-    object BlockQuirk : JsonDeserializer<BlockQuirk2> {
+    fun applyToGson(builder: GsonBuilder): Unit = builder.run {
+        registerTypeAdapter(BlockQuirk::class.java, DBlockQuirk)
+        registerTypeAdapter(ItemQuirk::class.java, DItemQuirk)
+        registerTypeAdapter(ItemGroup::class.java, ItemGroups)
+        registerTypeAdapter(BlockSoundGroup::class.java, SoundGroups)
+        registerTypeAdapter(CItemStack.Size::class.java, Size)
+        registerTypeAdapter(TextComponent::class.java, TextComponents)
+        registerTypeAdapter(StatusEffectInstance::class.java, StatusEffect)
+        registerTypeAdapter(SoundEvent::class.java, Sound)
+        registerTypeAdapter(Identifier::class.java, Id)
+        registerTypeAdapter(BlockArgument::class.java, BlockArguments)
+    }
+
+    object DBlockQuirk : JsonDeserializer<BlockQuirk> {
         override fun deserialize(
             json: JsonElement,
             typeOfT: Type?,
@@ -42,7 +58,7 @@ object Deserializers {
             json: JsonElement,
             typeOfT: Type?,
             context: JsonDeserializationContext?
-        ) = ItemGroup.GROUPS.first { it.method_7751() == json.asString }
+        ) = ItemGroup.GROUPS.first { it.id == json.asString }
     }
 
     object SoundGroups : JsonDeserializer<BlockSoundGroup> {
@@ -53,7 +69,7 @@ object Deserializers {
         ) = SoundGroup[Identifier(json.asString)]
     }
 
-    object ItemQuirk : JsonDeserializer<ItemQuirk2> {
+    object DItemQuirk : JsonDeserializer<ItemQuirk> {
         override fun deserialize(
             json: JsonElement,
             typeOfT: Type?,
@@ -105,5 +121,10 @@ object Deserializers {
     object Id : JsonDeserializer<Identifier> {
         override fun deserialize(json: JsonElement, typeOfT: Type?, context: JsonDeserializationContext?) =
             Identifier(json.asString)
+    }
+
+    object BlockArguments : JsonDeserializer<BlockArgument> {
+        override fun deserialize(json: JsonElement, typeOfT: Type?, context: JsonDeserializationContext?) =
+            BlockArgumentType.create().method_9654(StringReader(json.asString))
     }
 }

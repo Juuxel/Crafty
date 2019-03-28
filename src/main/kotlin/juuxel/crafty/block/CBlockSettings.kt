@@ -8,7 +8,7 @@ import juuxel.crafty.util.Content
 import juuxel.crafty.item.CItemSettings
 import juuxel.crafty.item.CItemStack
 import juuxel.crafty.util.WorldEvent
-import net.fabricmc.fabric.block.FabricBlockSettings
+import net.fabricmc.fabric.api.block.FabricBlockSettings
 import net.minecraft.block.Block
 import net.minecraft.util.Identifier
 import net.minecraft.util.registry.Registry
@@ -39,6 +39,9 @@ class CBlockSettings : Content<Block.Settings> {
         private set
 
     var onBreak: WorldEvent? = null
+        private set
+
+    var falling: FallingBlockSettings? = null
         private set
 
     override fun toMc(): Block.Settings =

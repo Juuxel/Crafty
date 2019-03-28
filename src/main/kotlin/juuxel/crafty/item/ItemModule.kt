@@ -22,7 +22,7 @@ object ItemModule : Module {
         try {
             val settings = Crafty.gson.fromJson<CItemSettings>(JsonReader(reader))
             val item = settings.quirk.factory(settings)
-            Registry.ITEM.register(Identifier(contentPack, fileName.name), item)
+            Registry.ITEM.add(Identifier(contentPack, fileName.name), item)
         } catch (e: Exception) {
             logger.error("Error while loading item file ${fileName.fullPath}")
             e.printStackTrace()

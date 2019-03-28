@@ -5,24 +5,14 @@
 package juuxel.crafty.painting
 
 import juuxel.crafty.util.Content
-import juuxel.palette.api.PaletteMotive
-import net.minecraft.util.Identifier
+import net.minecraft.entity.decoration.painting.PaintingMotive
 
-class CraftyPainting : Content<PaletteMotive> {
-    lateinit var texture: Identifier
-        private set
-
+class CraftyPainting : Content<PaintingMotive> {
     var width: Int = -1
         private set
 
     var height: Int = -1
         private set
 
-    var textureX: Int = -1
-        private set
-
-    var textureY: Int = -1
-        private set
-
-    override fun toMc() = PaletteMotive(width, height, textureX, textureY, texture)
+    override fun toMc() = PaintingMotive(width, height)
 }

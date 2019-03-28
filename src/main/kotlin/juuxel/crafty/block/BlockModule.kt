@@ -24,10 +24,10 @@ object BlockModule : Module {
             val settings = Crafty.gson.fromJson<CBlockSettings>(JsonReader(reader))
             val block = settings.quirk.factory(settings)
 
-            Registry.BLOCK.register(Identifier(contentPack, fileName.name), block)
+            Registry.BLOCK.add(Identifier(contentPack, fileName.name), block)
 
             settings.item?.let { item ->
-                Registry.ITEM.register(Identifier(contentPack, fileName.name), CraftyBlockItem(block, item))
+                Registry.ITEM.add(Identifier(contentPack, fileName.name), CraftyBlockItem(block, item))
             }
         } catch (e: Exception) {
             logger.error("Error while loading block file ${fileName.fullPath}")

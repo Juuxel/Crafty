@@ -3,9 +3,9 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     java
-    kotlin("jvm") version "1.3.11"
+    kotlin("jvm") version "1.3.20"
     idea
-    id("fabric-loom") version "0.1.0-SNAPSHOT"
+    id("fabric-loom") version "0.2.0-SNAPSHOT"
 }
 
 java {
@@ -33,21 +33,21 @@ configurations {
 
 repositories {
     mavenCentral()
+    maven(url = "https://minecraft.curseforge.com/api/maven") {
+        name = "CurseForge"
+    }
 }
 
 dependencies {
 	compile(kotlin("stdlib-jdk8"))
-	minecraft("com.mojang:minecraft:18w50a")
-	mappings("net.fabricmc:yarn:18w50a.92")
-	modCompile("net.fabricmc:fabric-loader:0.3.0.75")
-    modCompile("net.fabricmc:fabric-language-kotlin:1.3.10-26")
-    compileOnly("net.fabricmc:fabric-language-kotlin:1.3.10-26")
-	modCompile("net.fabricmc:fabric:0.1.2.64")
+	minecraft("com.mojang:minecraft:19w13a")
+	mappings("net.fabricmc:yarn:19w13a.3")
+	modCompile("net.fabricmc:fabric-loader:0.3.7.109")
+    implementation("net.fabricmc:fabric-language-kotlin:1.3.21-SNAPSHOT")
+	modCompile("net.fabricmc:fabric:0.2.6.117")
 
     // Other mods
-    modCompile(files("libs/Towelette-1.1.3.0-dev.jar"))
-    modCompile(files("libs/WateredDown-0.3.0-dev.jar"))
-    modCompile(files("../Palette/build/libs/Palette-0.1.0-dev.jar"))
+    modCompile("towelette:Towelette:1.4.0")
 
     // Other libraries
     add("shadow", "com.github.anymaker:tnjson:1.2")

@@ -13,8 +13,6 @@ import net.minecraft.util.Identifier
 import net.minecraft.util.registry.Registry
 import org.apache.logging.log4j.LogManager
 import java.io.Reader
-import java.nio.file.Files
-import java.nio.file.Path
 
 object PaintingModule : Module {
     private val logger = LogManager.getLogger()
@@ -23,7 +21,7 @@ object PaintingModule : Module {
     override fun loadContent(contentPack: String, reader: Reader, fileName: FileName) {
         try {
             val motive = Crafty.gson.fromJson<CraftyPainting>(JsonReader(reader))
-            Registry.MOTIVE.register(Identifier(contentPack, fileName.name), motive.toMc())
+            Registry.MOTIVE.add(Identifier(contentPack, fileName.name), motive.toMc())
         } catch (e: Exception) {
             logger.error("Error while loading painting file ${fileName.fullPath}")
             e.printStackTrace()
