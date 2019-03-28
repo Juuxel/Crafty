@@ -10,13 +10,11 @@ import net.minecraft.util.registry.DefaultedRegistry
 import net.minecraft.util.registry.Registry
 
 enum class Quirks(override val factory: (CItemSettings) -> Item) : Quirk {
-    None(::CraftyItem),
-    Food(::CraftyFoodItem);
+    None(::CraftyItem);
 
     companion object : DefaultedRegistry<Quirk>("none") {
         init {
             Registry.register(this, "none", None)
-            Registry.register(this, "food", Food)
         }
 
         fun fromString(str: String) = this[Identifier(str)]

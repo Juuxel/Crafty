@@ -30,7 +30,7 @@ object Crafty : ModInitializer {
     internal val gson = GsonBuilder().apply(Deserializers::applyToGson).create()
     private val directory = File(FabricLoader.getInstance().gameDirectory, "./crafty/").toPath()
     private val contentPacks = HashSet<String>()
-    private val modules = mutableSetOf(ItemGroupModule, SoundEventModule, SoundGroupModule, BlockModule, ItemModule, PaintingModule)
+    private val modules = mutableSetOf(ItemGroupModule, SoundEventModule, SoundGroupModule, BlockModule, ItemModule/*, PaintingModule*/)
 
     override fun onInitialize() {
         CompatLoader.load()

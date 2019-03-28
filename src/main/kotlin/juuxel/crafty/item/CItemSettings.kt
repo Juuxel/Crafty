@@ -37,5 +37,6 @@ class CItemSettings : Content<Item.Settings> {
 
     override fun toMc() = Item.Settings().apply {
         tab?.let { itemGroup(it) }/*.stackSize(stackSize).durability(durability)*/
+        food?.let { food(it.toMc()) }
     }
 }

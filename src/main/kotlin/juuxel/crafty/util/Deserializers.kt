@@ -58,7 +58,7 @@ object Deserializers {
             json: JsonElement,
             typeOfT: Type?,
             context: JsonDeserializationContext?
-        ) = ItemGroup.GROUPS.first { it.id == json.asString }
+        ) = ItemGroup.GROUPS.first { it.name == json.asString }
     }
 
     object SoundGroups : JsonDeserializer<BlockSoundGroup> {

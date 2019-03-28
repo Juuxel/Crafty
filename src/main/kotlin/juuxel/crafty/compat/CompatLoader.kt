@@ -4,9 +4,7 @@
  */
 package juuxel.crafty.compat
 
-import juuxel.crafty.Crafty
 import juuxel.crafty.block.Quirks
-import juuxel.crafty.painting.PaintingModule
 import net.minecraft.util.Identifier
 import org.apache.logging.log4j.LogManager
 

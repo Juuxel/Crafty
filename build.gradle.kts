@@ -47,7 +47,7 @@ dependencies {
 	modCompile("net.fabricmc:fabric:0.2.6.117")
 
     // Other mods
-    modCompile("towelette:Towelette:1.4.0")
+//    modCompile("towelette:Towelette:1.4.0")
 
     // Other libraries
     add("shadow", "com.github.anymaker:tnjson:1.2")

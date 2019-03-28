@@ -178,7 +178,7 @@ open class CraftyFallingBlock(val settings: CBlockSettings) : FallingBlock(setti
     ) {
         settings.falling?.onLanding?.run(world, null, pos)
 
-        if (world.random.nextDouble() < settings.falling!!.breakingChance) {
+        if (world.random.nextDouble() < settings.falling?.breakingChance ?: 0.0) {
             settings.falling?.onBreaking?.run(world, null, pos)
 
             settings.falling?.breakingState?.let {

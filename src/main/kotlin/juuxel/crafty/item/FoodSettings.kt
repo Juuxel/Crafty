@@ -4,10 +4,12 @@
  */
 package juuxel.crafty.item
 
+import juuxel.crafty.util.Content
 import juuxel.crafty.util.WorldEvent
 import net.minecraft.entity.effect.StatusEffectInstance
+import net.minecraft.item.FoodItemSetting
 
-class FoodSettings {
+class FoodSettings : Content<FoodItemSetting> {
     var hungerRestored: Int = 0
         private set
 
@@ -17,18 +19,39 @@ class FoodSettings {
     var wolfFood: Boolean = false
         private set
 
-    var effect: StatusEffectInstance? = null
-        private set
-
-    var effectChance: Float = 1f
+    var effectChances: List<StatusEffectChance>? = null
         private set
 
     var onConsume: WorldEvent? = null
         private set
 
-    var alwaysConsumable: Boolean = false
+    var alwaysEdible: Boolean = false
         private set
 
-    var consumeQuickly: Boolean = false
+    var eatenFast: Boolean = false
         private set
+
+    override fun toMc() = FoodItemSetting.Builder()
+        .run {
+            hunger(hungerRestored)
+            saturationModifier(saturation)
+            if (wolfFood) wolfFood()
+            if (alwaysEdible) alwaysEdible()
+            if (eatenFast) eatenFast()
+            effectChances?.forEach { (effect, chance) ->
+                statusEffect(effect, chance)
+            }
+
+            build()
+        }
+
+    class StatusEffectChance {
+        lateinit var effect: StatusEffectInstance
+            private set
+        var chance: Float = 0f
+            private set
+
+        operator fun component1(): StatusEffectInstance = effect
+        operator fun component2(): Float = chance
+    }
 }

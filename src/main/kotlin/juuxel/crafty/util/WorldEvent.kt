@@ -9,6 +9,7 @@ import juuxel.crafty.item.CItemStack
 import juuxel.crafty.particle.CParticle
 import net.minecraft.block.dispenser.ItemDispenserBehavior
 import net.minecraft.command.arguments.ParticleArgumentType
+import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.effect.StatusEffectInstance
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.sound.SoundCategory
@@ -38,13 +39,15 @@ open class WorldEvent {
     var actionBarMessage: TextComponent? = null
         private set
 
-    open fun run(world: World, player: PlayerEntity?, pos: BlockPos = player!!.pos) {
+    open fun run(world: World, entity: LivingEntity?, pos: BlockPos = entity!!.blockPos) {
         sound?.let {
-            world.playSound(player, pos, it, SoundCategory.BLOCK, 1f, 1f)
+            if (entity is PlayerEntity) {
+                world.playSound(entity, pos, it, SoundCategory.BLOCK, 1f, 1f)
+            }
         }
 
         statusEffects.forEach {
-            player?.addPotionEffect(it)
+            entity?.addPotionEffect(it)
         }
 
         for (p in particles) {
@@ -64,12 +67,14 @@ open class WorldEvent {
             ItemDispenserBehavior.dispenseItem(world, it.toMc(), 2, Direction.UP, BlockPointerImpl(world, pos.up()))
         }
 
-        chatMessages.forEach {
-            player?.addChatMessage(it, false)
-        }
+        if (entity is PlayerEntity) {
+            chatMessages.forEach {
+                entity.addChatMessage(it, false)
+            }
 
-        actionBarMessage?.let {
-            player?.addChatMessage(it, true)
+            actionBarMessage?.let {
+                entity.addChatMessage(it, true)
+            }
         }
     }
 
@@ -77,8 +82,8 @@ open class WorldEvent {
         var destroy: Boolean = false
             private set
 
-        override fun run(world: World, player: PlayerEntity?, pos: BlockPos) {
-            super.run(world, player, pos)
+        override fun run(world: World, entity: LivingEntity?, pos: BlockPos) {
+            super.run(world, entity, pos)
 
             if (world.isClient) return
             if (destroy) {
