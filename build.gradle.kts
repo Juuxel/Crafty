@@ -3,7 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     java
-    kotlin("jvm") version "1.3.20"
+    kotlin("jvm") version "1.3.21"
     idea
     id("fabric-loom") version "0.2.0-SNAPSHOT"
 }
@@ -39,15 +39,15 @@ repositories {
 }
 
 dependencies {
-	compile(kotlin("stdlib-jdk8"))
-	minecraft("com.mojang:minecraft:19w13a")
-	mappings("net.fabricmc:yarn:19w13a.3")
-	modCompile("net.fabricmc:fabric-loader:0.3.7.109")
-    implementation("net.fabricmc:fabric-language-kotlin:1.3.21-SNAPSHOT")
-	modCompile("net.fabricmc:fabric:0.2.6.117")
+    compile(kotlin("stdlib-jdk8"))
+    minecraft("com.mojang:minecraft:19w13a")
+    mappings("net.fabricmc:yarn:19w13a.3")
+    modCompile("net.fabricmc:fabric-loader:0.3.7.109")
+    modCompile("net.fabricmc:fabric-language-kotlin:1.3.21-SNAPSHOT")
+    modCompile("net.fabricmc:fabric:0.2.6.117")
 
     // Other mods
-//    modCompile("towelette:Towelette:1.4.0")
+    modCompile("towelette:Towelette:1.4.0")
 
     // Other libraries
     add("shadow", "com.github.anymaker:tnjson:1.2")
