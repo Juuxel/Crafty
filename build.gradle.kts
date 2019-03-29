@@ -3,9 +3,9 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     java
-    kotlin("jvm") version "1.3.21"
+    kotlin("jvm") version Versions.KOTLIN
     idea
-    id("fabric-loom") version "0.2.0-SNAPSHOT"
+    id("fabric-loom") version Versions.LOOM
 }
 
 java {
@@ -17,7 +17,7 @@ base {
     archivesBaseName = "Crafty"
 }
 
-version = "0.3.0"
+version = Versions.MOD
 
 minecraft {
 }
@@ -39,20 +39,32 @@ repositories {
 }
 
 dependencies {
-    compile(kotlin("stdlib-jdk8"))
-    minecraft("com.mojang:minecraft:19w13a")
-    mappings("net.fabricmc:yarn:19w13a.3")
-    modCompile("net.fabricmc:fabric-loader:0.3.7.109")
-    modCompile("net.fabricmc:fabric-language-kotlin:1.3.21-SNAPSHOT")
-    modCompile("net.fabricmc:fabric:0.2.6.117")
+    minecraft("com.mojang:minecraft:" + Versions.MINECRAFT)
+    mappings("net.fabricmc:yarn:" + Versions.MAPPINGS)
+    modCompile("net.fabricmc:fabric-loader:" + Versions.FABRIC_LOADER)
+    modCompile("net.fabricmc:fabric-language-kotlin:" + Versions.FABRIC_KOTLIN)
+    compileOnly("net.fabricmc:fabric-language-kotlin:" + Versions.FABRIC_KOTLIN)
+    modCompile("net.fabricmc:fabric:" + Versions.FABRIC)
 
     // Other mods
-    modCompile("towelette:Towelette:1.4.0")
+    modCompile("towelette:Towelette:" + Versions.TOWELETTE)
 
     // Other libraries
-    add("shadow", "com.github.anymaker:tnjson:1.2")
+    add("shadow", "com.github.anymaker:tnjson:" + Versions.TNJSON)
 }
 
 tasks.withType<Jar> {
     from(configurations["shadow"].asFileTree.files.map { zipTree(it) })
+}
+
+tasks.getByName<ProcessResources>("processResources") {
+    filesMatching("fabric.mod.json") {
+        expand(
+            mutableMapOf(
+                "modVersion" to Versions.MOD,
+                "kotlinVersion" to Versions.FABRIC_KOTLIN,
+                "fabricVersion" to Versions.FABRIC
+            )
+        )
+    }
 }
