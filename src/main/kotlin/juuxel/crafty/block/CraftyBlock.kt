@@ -24,18 +24,24 @@ import net.minecraft.util.Hand
 import net.minecraft.util.hit.BlockHitResult
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
-import net.minecraft.util.shape.VoxelShape
 import net.minecraft.world.BlockView
 import net.minecraft.world.World
 import net.minecraft.world.loot.context.LootContext
 
 open class CraftyBlock(val settings: CBlockSettings) : Block(settings.toMc()) {
     override fun getOutlineShape(
-        blockState_1: BlockState?,
-        blockView_1: BlockView?,
-        blockPos_1: BlockPos?,
-        verticalEntityPosition_1: VerticalEntityPosition?
-    ) = BlockUtils.getShape(settings)
+        state: BlockState?,
+        view: BlockView?,
+        pos: BlockPos?,
+        vep: VerticalEntityPosition?
+    ) = settings.builtOutlineShape
+
+    override fun getCollisionShape(
+        state: BlockState?,
+        view: BlockView?,
+        pos: BlockPos?,
+        vep: VerticalEntityPosition?
+    ) = settings.builtCollisionShape ?: super.getCollisionShape(state, view, pos, vep)
 
     override fun getDroppedStacks(
         state: BlockState?,
@@ -108,11 +114,18 @@ class CraftyWaterloggableBlock(settings: CBlockSettings) : CraftyBlock(settings)
 
 open class CraftyFallingBlock(val settings: CBlockSettings) : FallingBlock(settings.toMc()) {
     override fun getOutlineShape(
-        blockState_1: BlockState?,
-        blockView_1: BlockView?,
-        blockPos_1: BlockPos?,
-        verticalEntityPosition_1: VerticalEntityPosition?
-    ) = BlockUtils.getShape(settings)
+        state: BlockState?,
+        view: BlockView?,
+        pos: BlockPos?,
+        vep: VerticalEntityPosition?
+    ) = settings.builtOutlineShape
+
+    override fun getCollisionShape(
+        state: BlockState?,
+        view: BlockView?,
+        pos: BlockPos?,
+        vep: VerticalEntityPosition?
+    ) = settings.builtCollisionShape ?: super.getCollisionShape(state, view, pos, vep)
 
     override fun getDroppedStacks(
         state: BlockState?,

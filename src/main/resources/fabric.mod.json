@@ -2,13 +2,13 @@
   "id": "crafty",
   "name": "Crafty",
   "description": "Custom blocks and items using JSON",
-  "version": "0.3.0",
+  "version": "${modVersion}",
   "side": "universal",
   "initializer": "juuxel.crafty.Crafty",
   "requires": {
-    "fabric": "*",
+    "fabric": "[${fabricVersion},)",
     "fabric-language-kotlin": {
-      "version": "*"
+      "version": "[${kotlinVersion},)"
     }
   },
   "mixins": {

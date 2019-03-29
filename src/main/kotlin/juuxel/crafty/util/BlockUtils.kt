@@ -4,12 +4,14 @@
  */
 package juuxel.crafty.util
 
+import juuxel.crafty.block.Bounds
 import juuxel.crafty.block.CBlockSettings
 import juuxel.crafty.item.CItemStack
 import net.minecraft.block.Block
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.ItemStack
 import net.minecraft.util.math.BlockPos
+import net.minecraft.util.shape.VoxelShape
 import net.minecraft.util.shape.VoxelShapes
 import net.minecraft.world.World
 
@@ -24,10 +26,14 @@ object BlockUtils {
             } else this
         }
 
-    fun getShape(settings: CBlockSettings) =
-        settings.shape.map {
-            Block.createCuboidShape(it.from[0], it.from[1], it.from[2], it.to[0], it.to[1], it.to[2])
-        }.reduce(VoxelShapes::union)
+    fun buildShape(shape: Array<Bounds>): VoxelShape =
+        if (shape.isNotEmpty()) {
+            shape.map {
+                Block.createCuboidShape(it.from[0], it.from[1], it.from[2], it.to[0], it.to[1], it.to[2])
+            }.reduce(VoxelShapes::union)
+        } else {
+            VoxelShapes.empty()
+        }
 
     fun onActivate(world: World, player: PlayerEntity, pos: BlockPos, settings: CBlockSettings) {
         settings.onActivate?.run(world, player, pos)

@@ -1,0 +1,11 @@
+{
+  "tab": "food",
+  "food": {
+    "hungerRestored": 4,
+    "saturation": 1.0,
+    "eatenFast": true
+  },
+  "tooltip": [{
+    "text": "Some nice food"
+  }]
+}

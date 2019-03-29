@@ -1,0 +1,15 @@
+{
+  "material": {
+    "base": "minecraft:sand"
+  },
+  "item": {
+    "tab": "building_blocks",
+    "food": {
+      "hungerRestored": 1
+    }
+  },
+  "quirk": "falling",
+  "falling": {
+    "hurtsEntities": true
+  }
+}

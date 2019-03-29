@@ -12,6 +12,6 @@ object Versions {
     const val FABRIC_KOTLIN = "$KOTLIN-SNAPSHOT"
 
     // Other
-    const val TOWELETTE = "1.4.0"
+    const val TOWELETTE = "1.4.2"
     const val TNJSON = "1.2"
 }

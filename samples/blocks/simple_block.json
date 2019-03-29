@@ -1,0 +1,8 @@
+{
+  "material": {
+    "base": "minecraft:dirt"
+  },
+  "item": {
+    "tab": "building_blocks"
+  }
+}
