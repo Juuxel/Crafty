@@ -1,20 +1,19 @@
 /* This file is a part of the Crafty project
- * by Juuxel, licensed under the MIT license.
+ * by Juuxel, licensed under the GPLv3 license.
  * Full code and license: https://github.com/Juuxel/Crafty
  */
 package juuxel.crafty
 
-import a2u.tn.utils.json.JsonParser
-import a2u.tn.utils.json.JsonSerializer
 import com.google.gson.GsonBuilder
+import de.tudresden.inf.lat.jsexp.SexpFactory
 import juuxel.crafty.block.BlockModule
 import juuxel.crafty.compat.CompatLoader
 import juuxel.crafty.item.*
-import juuxel.crafty.painting.PaintingModule
 import juuxel.crafty.sounds.SoundEventModule
 import juuxel.crafty.sounds.SoundGroupModule
 import juuxel.crafty.util.Deserializers
 import juuxel.crafty.util.FileName
+import juuxel.crafty.util.SexpConverter
 import net.fabricmc.api.ModInitializer
 import net.fabricmc.loader.api.FabricLoader
 import org.apache.logging.log4j.LogManager
@@ -57,17 +56,13 @@ object Crafty : ModInitializer {
                 if (Files.isDirectory(l2) && l2.fileName.toString() == dir)
                     Files.newDirectoryStream(l2).forEach { file ->
                         when (file.toFile().extension) {
-                            "json" -> module.loadContent(
+                            "sexp" -> module.loadContent(
                                 pack,
-                                Files.newBufferedReader(file),
-                                FileName.fromFile(file.toFile())
-                            )
-
-                            "json5" -> module.loadContent(
-                                pack,
-                                StringReader(JsonSerializer.toJson(JsonParser.parse(
-                                    file.toFile().readText()
-                                ))),
+                                StringReader(
+                                    SexpConverter.sexpToJson(
+                                        SexpFactory.parse(Files.newBufferedReader(file))
+                                    ).toString())
+                                ,
                                 FileName.fromFile(file.toFile())
                             )
                         }

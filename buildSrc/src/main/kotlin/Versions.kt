@@ -1,9 +1,9 @@
 object Versions {
     // Core
     const val KOTLIN = "1.3.21"
-    const val MINECRAFT = "19w13a"
-    const val MOD = "0.3.0+$MINECRAFT"
-    const val MAPPINGS = "$MINECRAFT.3"
+    const val MINECRAFT = "19w13b"
+    const val MOD = "1.0.0+$MINECRAFT"
+    const val MAPPINGS = "$MINECRAFT.8"
 
     // Fabric
     const val FABRIC = "0.2.6.117"
@@ -12,6 +12,6 @@ object Versions {
     const val FABRIC_KOTLIN = "$KOTLIN-SNAPSHOT"
 
     // Other
-    const val TOWELETTE = "1.4.2"
-    const val TNJSON = "1.2"
+    const val TOWELETTE = "1.4.3"
+    const val JSEXP = "0.2.2"
 }

@@ -1,7 +1,7 @@
 {
   "id": "crafty",
-  "name": "Crafty",
-  "description": "Custom blocks and items using JSON",
+  "name": "Crafty II",
+  "description": "Custom blocks and items using S-expressions",
   "version": "${modVersion}",
   "side": "universal",
   "initializer": "juuxel.crafty.Crafty",

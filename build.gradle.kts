@@ -14,7 +14,7 @@ java {
 }
 
 base {
-    archivesBaseName = "Crafty"
+    archivesBaseName = "CraftyII"
 }
 
 version = Versions.MOD
@@ -50,7 +50,7 @@ dependencies {
     modCompile("towelette:Towelette:" + Versions.TOWELETTE)
 
     // Other libraries
-    add("shadow", "com.github.anymaker:tnjson:" + Versions.TNJSON)
+    add("shadow", "de.tu-dresden.inf.lat.jsexp:jsexp:" + Versions.JSEXP)
 }
 
 tasks.withType<Jar> {
