@@ -42,7 +42,7 @@ open class WorldEvent {
     open fun run(world: World, entity: LivingEntity?, pos: BlockPos = entity!!.blockPos) {
         sound?.let {
             if (entity is PlayerEntity) {
-                world.playSound(entity, pos, it, SoundCategory.BLOCK, 1f, 1f)
+                world.playSound(entity, pos, it, SoundCategory.BLOCKS, 1f, 1f)
             }
         }
 

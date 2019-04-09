@@ -4,7 +4,6 @@
  */
 package juuxel.crafty.block
 
-import juuxel.crafty.util.BlockUtils
 import net.minecraft.block.Block
 import net.minecraft.block.BlockState
 import net.minecraft.block.FallingBlock

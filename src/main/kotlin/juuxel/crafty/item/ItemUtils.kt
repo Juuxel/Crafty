@@ -2,9 +2,8 @@
  * by Juuxel, licensed under the MIT license.
  * Full code and license: https://github.com/Juuxel/Crafty
  */
-package juuxel.crafty.util
+package juuxel.crafty.item
 
-import juuxel.crafty.item.CItemSettings
 import net.minecraft.text.TextComponent
 
 object ItemUtils {

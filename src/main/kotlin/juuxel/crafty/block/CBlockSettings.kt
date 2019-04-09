@@ -7,7 +7,6 @@ package juuxel.crafty.block
 import juuxel.crafty.util.Content
 import juuxel.crafty.item.CItemSettings
 import juuxel.crafty.item.CItemStack
-import juuxel.crafty.util.BlockUtils
 import juuxel.crafty.util.WorldEvent
 import net.fabricmc.fabric.api.block.FabricBlockSettings
 import net.minecraft.block.Block

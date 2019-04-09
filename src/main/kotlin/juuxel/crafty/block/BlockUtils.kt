@@ -2,10 +2,8 @@
  * by Juuxel, licensed under the MIT license.
  * Full code and license: https://github.com/Juuxel/Crafty
  */
-package juuxel.crafty.util
+package juuxel.crafty.block
 
-import juuxel.crafty.block.Bounds
-import juuxel.crafty.block.CBlockSettings
 import juuxel.crafty.item.CItemStack
 import net.minecraft.block.Block
 import net.minecraft.entity.player.PlayerEntity

@@ -1,17 +1,28 @@
 {
+  "schemaVersion": 1,
   "id": "crafty",
   "name": "Crafty",
-  "description": "Custom blocks and items using JSON",
   "version": "${modVersion}",
-  "side": "universal",
-  "initializer": "juuxel.crafty.Crafty",
-  "requires": {
-    "fabric": "[${fabricVersion},)",
-    "fabric-language-kotlin": {
-      "version": "[${kotlinVersion},)"
-    }
+  "description": "Custom blocks and items using JSON",
+  "authors": ["Juuz"],
+  "license": "MIT",
+  "icon": "icon.png",
+  "contact": {
+    "homepage": "https://minecraft.curseforge.com/projects/crafty",
+    "issues": "https://github.com/Juuxel/Crafty/issues",
+    "sources": "https://github.com/Juuxel/Crafty"
   },
-  "mixins": {
+  "entrypoints": {
+    "main": [{
+      "adapter": "kotlin",
+      "value": "juuxel.crafty.Crafty"
+    }]
   },
-  "languageAdapter": "net.fabricmc.language.kotlin.KotlinLanguageAdapter"
+  "depends": {
+    "fabric": ">=0.2.6.121",
+    "fabric-language-kotlin": ">=1.3.21"
+  },
+  "suggests": {
+    "towelette": "*"
+  }
 }

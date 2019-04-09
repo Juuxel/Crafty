@@ -4,7 +4,6 @@
  */
 package juuxel.crafty.item
 
-import juuxel.crafty.util.ItemUtils
 import net.minecraft.block.Block
 import net.minecraft.client.item.TooltipContext
 import net.minecraft.entity.LivingEntity
