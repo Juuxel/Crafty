@@ -19,8 +19,8 @@
     }]
   },
   "depends": {
-    "fabric": ">=0.2.6.121",
-    "fabric-language-kotlin": ">=1.3.21"
+    "fabric": ">=0.2.7",
+    "fabric-language-kotlin": ">=1.3.30"
   },
   "suggests": {
     "towelette": "*"

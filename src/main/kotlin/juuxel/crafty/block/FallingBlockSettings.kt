@@ -5,13 +5,13 @@
 package juuxel.crafty.block
 
 import juuxel.crafty.util.WorldEvent
-import net.minecraft.command.arguments.BlockArgument
+import net.minecraft.command.arguments.BlockStateArgument
 
 class FallingBlockSettings {
     var hurtsEntities = false
         private set
 
-    var breakingState: BlockArgument? = null
+    var breakingState: BlockStateArgument? = null
         private set
 
     var breakingChance: Double = 0.2

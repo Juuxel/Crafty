@@ -98,7 +98,7 @@ class CraftyWaterloggableBlock(settings: CBlockSettings) : CraftyBlock(settings)
     }
 
     override fun getFluidState(state: BlockState) =
-        if (state[Properties.WATERLOGGED]) Fluids.WATER.getState(true)
+        if (state[Properties.WATERLOGGED]) Fluids.WATER.getStill(true)
         else Fluids.EMPTY.defaultState
 
     override fun appendProperties(builder: StateFactory.Builder<Block, BlockState>) {

@@ -15,8 +15,8 @@ import juuxel.crafty.block.Quirk as BlockQuirk
 import juuxel.crafty.block.Quirks as BlockQuirks
 import juuxel.crafty.item.CItemStack
 import juuxel.crafty.sounds.SoundGroup
-import net.minecraft.command.arguments.BlockArgument
-import net.minecraft.command.arguments.BlockArgumentType
+import net.minecraft.command.arguments.BlockStateArgument
+import net.minecraft.command.arguments.BlockStateArgumentType
 import net.minecraft.datafixers.NbtOps
 import net.minecraft.entity.effect.StatusEffectInstance
 import net.minecraft.item.ItemGroup
@@ -42,7 +42,7 @@ object Deserializers {
         registerTypeAdapter(StatusEffectInstance::class.java, StatusEffect)
         registerTypeAdapter(SoundEvent::class.java, Sound)
         registerTypeAdapter(Identifier::class.java, Id)
-        registerTypeAdapter(BlockArgument::class.java, BlockArguments)
+        registerTypeAdapter(BlockStateArgument::class.java, BlockStateArguments)
     }
 
     object DBlockQuirk : JsonDeserializer<BlockQuirk> {
@@ -123,8 +123,8 @@ object Deserializers {
             Identifier(json.asString)
     }
 
-    object BlockArguments : JsonDeserializer<BlockArgument> {
+    object BlockStateArguments : JsonDeserializer<BlockStateArgument> {
         override fun deserialize(json: JsonElement, typeOfT: Type?, context: JsonDeserializationContext?) =
-            BlockArgumentType.create().method_9654(StringReader(json.asString))
+            BlockStateArgumentType.create().method_9654(StringReader(json.asString))
     }
 }

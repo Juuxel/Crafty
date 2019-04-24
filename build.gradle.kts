@@ -61,9 +61,7 @@ tasks.getByName<ProcessResources>("processResources") {
     filesMatching("fabric.mod.json") {
         expand(
             mutableMapOf(
-                "modVersion" to Versions.MOD,
-                "kotlinVersion" to Versions.FABRIC_KOTLIN,
-                "fabricVersion" to Versions.FABRIC
+                "modVersion" to Versions.MOD
             )
         )
     }
