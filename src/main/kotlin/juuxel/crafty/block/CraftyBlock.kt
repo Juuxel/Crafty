@@ -4,10 +4,7 @@
  */
 package juuxel.crafty.block
 
-import net.minecraft.block.Block
-import net.minecraft.block.BlockState
-import net.minecraft.block.FallingBlock
-import net.minecraft.block.Waterloggable
+import net.minecraft.block.*
 import net.minecraft.entity.FallingBlockEntity
 import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.VerticalEntityPosition
@@ -90,6 +87,8 @@ open class CraftyBlock(val settings: CBlockSettings) : Block(settings.toMc()) {
         super.onPlaced(world, pos, state, entity, stack)
         BlockUtils.onPlaced(world, pos, entity as? PlayerEntity, settings)
     }
+
+    override fun getRenderLayer() = settings.material.renderLayer
 }
 
 class CraftyWaterloggableBlock(settings: CBlockSettings) : CraftyBlock(settings), Waterloggable {
@@ -200,4 +199,6 @@ open class CraftyFallingBlock(val settings: CBlockSettings) : FallingBlock(setti
             }
         }
     }
+
+    override fun getRenderLayer() = settings.material.renderLayer
 }

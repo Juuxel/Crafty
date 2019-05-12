@@ -15,6 +15,7 @@ import juuxel.crafty.block.Quirk as BlockQuirk
 import juuxel.crafty.block.Quirks as BlockQuirks
 import juuxel.crafty.item.CItemStack
 import juuxel.crafty.sounds.SoundGroup
+import net.minecraft.block.BlockRenderLayer
 import net.minecraft.command.arguments.BlockStateArgument
 import net.minecraft.command.arguments.BlockStateArgumentType
 import net.minecraft.datafixers.NbtOps
@@ -30,6 +31,7 @@ import java.lang.IllegalArgumentException
 import juuxel.crafty.item.Quirk as ItemQuirk
 import juuxel.crafty.item.Quirks as ItemQuirks
 import java.lang.reflect.Type
+import java.util.Locale
 
 object Deserializers {
     fun applyToGson(builder: GsonBuilder): Unit = builder.run {
@@ -37,12 +39,13 @@ object Deserializers {
         registerTypeAdapter(ItemQuirk::class.java, DItemQuirk)
         registerTypeAdapter(ItemGroup::class.java, ItemGroups)
         registerTypeAdapter(BlockSoundGroup::class.java, SoundGroups)
-        registerTypeAdapter(CItemStack.Size::class.java, Size)
+        registerTypeAdapter(CItemStack.Size::class.java, StackSize)
         registerTypeAdapter(TextComponent::class.java, TextComponents)
-        registerTypeAdapter(StatusEffectInstance::class.java, StatusEffect)
-        registerTypeAdapter(SoundEvent::class.java, Sound)
-        registerTypeAdapter(Identifier::class.java, Id)
+        registerTypeAdapter(StatusEffectInstance::class.java, StatusEffects)
+        registerTypeAdapter(SoundEvent::class.java, SoundEvents)
+        registerTypeAdapter(Identifier::class.java, Identifiers)
         registerTypeAdapter(BlockStateArgument::class.java, BlockStateArguments)
+        registerTypeAdapter(BlockRenderLayer::class.java, BlockRenderLayers)
     }
 
     object DBlockQuirk : JsonDeserializer<BlockQuirk> {
@@ -77,7 +80,7 @@ object Deserializers {
         ) = ItemQuirks.fromString(json.asString)
     }
 
-    object Size : JsonDeserializer<CItemStack.Size> {
+    object StackSize : JsonDeserializer<CItemStack.Size> {
         override fun deserialize(
             json: JsonElement,
             typeOfT: Type?,
@@ -105,7 +108,7 @@ object Deserializers {
         ) = TextComponent.Serializer.fromJson(json)
     }
 
-    object StatusEffect : JsonDeserializer<StatusEffectInstance> {
+    object StatusEffects : JsonDeserializer<StatusEffectInstance> {
         override fun deserialize(
             json: JsonElement?,
             typeOfT: Type?,
@@ -113,12 +116,12 @@ object Deserializers {
         ) = StatusEffectInstance.deserialize(Dynamic.convert(JsonOps.INSTANCE, NbtOps.INSTANCE, json) as CompoundTag)
     }
 
-    object Sound : JsonDeserializer<SoundEvent> {
+    object SoundEvents : JsonDeserializer<SoundEvent> {
         override fun deserialize(json: JsonElement, typeOfT: Type?, context: JsonDeserializationContext?) =
             Registry.SOUND_EVENT.get(Identifier(json.asString))
     }
 
-    object Id : JsonDeserializer<Identifier> {
+    object Identifiers : JsonDeserializer<Identifier> {
         override fun deserialize(json: JsonElement, typeOfT: Type?, context: JsonDeserializationContext?) =
             Identifier(json.asString)
     }
@@ -126,5 +129,10 @@ object Deserializers {
     object BlockStateArguments : JsonDeserializer<BlockStateArgument> {
         override fun deserialize(json: JsonElement, typeOfT: Type?, context: JsonDeserializationContext?) =
             BlockStateArgumentType.create().method_9654(StringReader(json.asString))
+    }
+
+    object BlockRenderLayers : JsonDeserializer<BlockRenderLayer> {
+        override fun deserialize(json: JsonElement, typeOfT: Type?, context: JsonDeserializationContext?) =
+            BlockRenderLayer.valueOf(json.asString.toUpperCase(Locale.ROOT))
     }
 }

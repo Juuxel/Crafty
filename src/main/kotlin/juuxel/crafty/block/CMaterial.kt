@@ -4,6 +4,7 @@
  */
 package juuxel.crafty.block
 
+import net.minecraft.block.BlockRenderLayer
 import net.minecraft.sound.BlockSoundGroup
 
 class CMaterial {
@@ -27,5 +28,7 @@ class CMaterial {
 
     var redstonePower: Int = 0
         private set
+
+    var renderLayer: BlockRenderLayer = BlockRenderLayer.SOLID
+        private set
 }
- 

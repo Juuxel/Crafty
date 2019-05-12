@@ -2,7 +2,7 @@ object Versions {
     // Core
     const val KOTLIN = "1.3.30"
     const val MINECRAFT = "1.14"
-    const val MOD = "0.3.1+$MINECRAFT"
+    const val MOD = "0.3.2+$MINECRAFT"
     const val MAPPINGS = "$MINECRAFT+build.1"
 
     // Fabric
