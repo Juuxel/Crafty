@@ -8,7 +8,7 @@ import juuxel.crafty.util.Content
 import juuxel.crafty.util.WorldEvent
 import net.minecraft.item.Item
 import net.minecraft.item.ItemGroup
-import net.minecraft.text.TextComponent
+import net.minecraft.network.chat.Component
 
 class CItemSettings : Content<Item.Settings> {
     var tab: ItemGroup? = null
@@ -26,7 +26,7 @@ class CItemSettings : Content<Item.Settings> {
     var durability: Int = 0
         private set*/
 
-    var tooltip: Array<TextComponent> = emptyArray()
+    var tooltip: Array<Component> = emptyArray()
         private set
 
     var glowing: Boolean = false

@@ -44,7 +44,7 @@ dependencies {
     modCompile("net.fabricmc:fabric-loader:" + Versions.FABRIC_LOADER)
     modCompile("net.fabricmc:fabric-language-kotlin:" + Versions.FABRIC_KOTLIN)
     compileOnly("net.fabricmc:fabric-language-kotlin:" + Versions.FABRIC_KOTLIN)
-    modCompile("net.fabricmc:fabric:" + Versions.FABRIC)
+    modCompile("net.fabricmc.fabric-api:fabric-api:" + Versions.FABRIC)
 
     // Other mods
     modCompile("towelette:Towelette:" + Versions.TOWELETTE)

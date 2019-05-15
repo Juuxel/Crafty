@@ -4,9 +4,9 @@
  */
 package juuxel.crafty.item
 
-import net.minecraft.text.TextComponent
+import net.minecraft.network.chat.Component
 
 object ItemUtils {
-    fun buildTooltip(list: MutableList<TextComponent>, settings: CItemSettings) =
+    fun buildTooltip(list: MutableList<Component>, settings: CItemSettings) =
         settings.tooltip.forEach { list.add(it) }
 }

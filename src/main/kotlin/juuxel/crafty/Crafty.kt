@@ -10,7 +10,6 @@ import com.google.gson.GsonBuilder
 import juuxel.crafty.block.BlockModule
 import juuxel.crafty.compat.CompatLoader
 import juuxel.crafty.item.*
-import juuxel.crafty.painting.PaintingModule
 import juuxel.crafty.sounds.SoundEventModule
 import juuxel.crafty.sounds.SoundGroupModule
 import juuxel.crafty.util.Deserializers
@@ -28,7 +27,7 @@ import juuxel.crafty.item.Quirk as ItemQuirk
 object Crafty : ModInitializer {
     private val logger = LogManager.getLogger()
     internal val gson = GsonBuilder().apply(Deserializers::applyToGson).create()
-    private val directory = File(FabricLoader.getInstance().gameDirectory, "./crafty/").toPath()
+    private val contentPackDir = FabricLoader.getInstance().gameDirectory.toPath().resolve("crafty")
     private val contentPacks = HashSet<String>()
     private val modules = mutableSetOf(ItemGroupModule, SoundEventModule, SoundGroupModule, BlockModule, ItemModule/*, PaintingModule*/)
 
@@ -39,39 +38,53 @@ object Crafty : ModInitializer {
     }
 
     private fun checkDirs() {
-        arrayOf(directory).forEach {
+        arrayOf(contentPackDir).forEach {
             if (Files.notExists(it)) {
                 Files.createDirectory(it)
+            } else if (!Files.isDirectory(it)) {
+                logger.error("[Crafty] The content pack directory ($it) is not a directory!")
             }
         }
     }
 
+    // TODO: Make loading iterate on packs, not modules
     private fun loadModule(module: Module) {
-        val dir = module.name
+        val moduleName = module.name
 
-        Files.newDirectoryStream(directory).forEach {
-            val pack = it.fileName.toString().toLowerCase(Locale.ROOT)
+        for (packFile in Files.newDirectoryStream(contentPackDir)) {
+            if (!Files.isDirectory(packFile)) {
+                logger.debug("[Crafty] Skipping non-directory file $packFile while loading module ${module.name}")
+                continue
+            }
+
+            val pack = packFile.fileName.toString().toLowerCase(Locale.ROOT)
             contentPacks += pack
-            logger.info("[Crafty] Loading content pack $pack: $dir")
-            if (Files.isDirectory(it)) Files.newDirectoryStream(it).forEach { l2 ->
-                if (Files.isDirectory(l2) && l2.fileName.toString() == dir)
-                    Files.newDirectoryStream(l2).forEach { file ->
-                        when (file.toFile().extension) {
-                            "json" -> module.loadContent(
-                                pack,
-                                Files.newBufferedReader(file),
-                                FileName.fromFile(file.toFile())
-                            )
+            val modulePath = packFile.resolve(moduleName)
+            val isModulePresent = Files.isDirectory(modulePath)
+            logger.info("[Crafty] Loading content pack $pack: $moduleName${if (!isModulePresent) " [not found]" else ""}")
 
-                            "json5" -> module.loadContent(
-                                pack,
-                                StringReader(JsonSerializer.toJson(JsonParser.parse(
+            if (!isModulePresent) continue
+
+            Files.newDirectoryStream(modulePath).forEach { file ->
+                when (file.toFile().extension) {
+                    "json" -> module.loadContent(
+                        pack,
+                        Files.newBufferedReader(file),
+                        FileName.fromFile(file.toFile())
+                    )
+
+                    "json5" -> module.loadContent(
+                        pack,
+                        StringReader(
+                            JsonSerializer.toJson(
+                                JsonParser.parse(
                                     file.toFile().readText()
-                                ))),
-                                FileName.fromFile(file.toFile())
+                                )
                             )
-                        }
-                    }
+                        ),
+                        FileName.fromFile(file.toFile())
+                    )
+                }
             }
         }
     }

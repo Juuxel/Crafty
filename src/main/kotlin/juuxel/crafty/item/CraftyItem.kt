@@ -11,13 +11,13 @@ import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.BlockItem
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
-import net.minecraft.text.TextComponent
+import net.minecraft.network.chat.Component
 import net.minecraft.util.Hand
 import net.minecraft.util.TypedActionResult
 import net.minecraft.world.World
 
 class CraftyItem(val settings: CItemSettings) : Item(settings.toMc()) {
-    override fun buildTooltip(stack: ItemStack, world: World?, list: MutableList<TextComponent>, opts: TooltipContext) =
+    override fun buildTooltip(stack: ItemStack, world: World?, list: MutableList<Component>, opts: TooltipContext) =
         ItemUtils.buildTooltip(list, settings)
 
     override fun hasEnchantmentGlint(stack: ItemStack) =
@@ -38,7 +38,7 @@ class CraftyItem(val settings: CItemSettings) : Item(settings.toMc()) {
 }
 
 class CraftyBlockItem(block: Block, val settings: CItemSettings) : BlockItem(block, settings.toMc()) {
-    override fun buildTooltip(stack: ItemStack, world: World?, list: MutableList<TextComponent>, opts: TooltipContext) =
+    override fun buildTooltip(stack: ItemStack, world: World?, list: MutableList<Component>, opts: TooltipContext) =
         ItemUtils.buildTooltip(list, settings)
 
     override fun hasEnchantmentGlint(stack: ItemStack) =

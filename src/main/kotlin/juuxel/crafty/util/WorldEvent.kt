@@ -12,9 +12,9 @@ import net.minecraft.command.arguments.ParticleArgumentType
 import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.effect.StatusEffectInstance
 import net.minecraft.entity.player.PlayerEntity
+import net.minecraft.network.chat.Component
 import net.minecraft.sound.SoundCategory
 import net.minecraft.sound.SoundEvent
-import net.minecraft.text.TextComponent
 import net.minecraft.util.math.BlockPointerImpl
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
@@ -33,10 +33,10 @@ open class WorldEvent {
     var particles: Array<CParticle> = emptyArray()
         private set
 
-    var chatMessages: Array<TextComponent> = emptyArray()
+    var chatMessages: Array<Component> = emptyArray()
         private set
 
-    var actionBarMessage: TextComponent? = null
+    var actionBarMessage: Component? = null
         private set
 
     open fun run(world: World, entity: LivingEntity?, pos: BlockPos = entity!!.blockPos) {

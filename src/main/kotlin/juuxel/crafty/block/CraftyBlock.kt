@@ -7,7 +7,7 @@ package juuxel.crafty.block
 import net.minecraft.block.*
 import net.minecraft.entity.FallingBlockEntity
 import net.minecraft.entity.LivingEntity
-import net.minecraft.entity.VerticalEntityPosition
+import net.minecraft.entity.EntityContext
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.fluid.Fluids
 import net.minecraft.item.ItemPlacementContext
@@ -29,15 +29,15 @@ open class CraftyBlock(val settings: CBlockSettings) : Block(settings.toMc()) {
         state: BlockState?,
         view: BlockView?,
         pos: BlockPos?,
-        vep: VerticalEntityPosition?
+        context: EntityContext?
     ) = settings.builtOutlineShape
 
     override fun getCollisionShape(
         state: BlockState?,
         view: BlockView?,
         pos: BlockPos?,
-        vep: VerticalEntityPosition?
-    ) = settings.builtCollisionShape ?: super.getCollisionShape(state, view, pos, vep)
+        context: EntityContext?
+    ) = settings.builtCollisionShape ?: super.getCollisionShape(state, view, pos, context)
 
     override fun getDroppedStacks(
         state: BlockState?,
@@ -102,7 +102,7 @@ class CraftyWaterloggableBlock(settings: CBlockSettings) : CraftyBlock(settings)
 
     override fun appendProperties(builder: StateFactory.Builder<Block, BlockState>) {
         super.appendProperties(builder)
-        builder.with(Properties.WATERLOGGED)
+        builder.add(Properties.WATERLOGGED)
     }
 
     override fun getPlacementState(context: ItemPlacementContext): BlockState? =
@@ -115,15 +115,15 @@ open class CraftyFallingBlock(val settings: CBlockSettings) : FallingBlock(setti
         state: BlockState?,
         view: BlockView?,
         pos: BlockPos?,
-        vep: VerticalEntityPosition?
+        context: EntityContext?
     ) = settings.builtOutlineShape
 
     override fun getCollisionShape(
         state: BlockState?,
         view: BlockView?,
         pos: BlockPos?,
-        vep: VerticalEntityPosition?
-    ) = settings.builtCollisionShape ?: super.getCollisionShape(state, view, pos, vep)
+        context: EntityContext?
+    ) = settings.builtCollisionShape ?: super.getCollisionShape(state, view, pos, context)
 
     override fun getDroppedStacks(
         state: BlockState?,

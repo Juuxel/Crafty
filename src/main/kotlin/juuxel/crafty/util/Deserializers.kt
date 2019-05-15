@@ -22,9 +22,9 @@ import net.minecraft.datafixers.NbtOps
 import net.minecraft.entity.effect.StatusEffectInstance
 import net.minecraft.item.ItemGroup
 import net.minecraft.nbt.CompoundTag
+import net.minecraft.network.chat.Component
 import net.minecraft.sound.BlockSoundGroup
 import net.minecraft.sound.SoundEvent
-import net.minecraft.text.TextComponent
 import net.minecraft.util.Identifier
 import net.minecraft.util.registry.Registry
 import java.lang.IllegalArgumentException
@@ -40,7 +40,7 @@ object Deserializers {
         registerTypeAdapter(ItemGroup::class.java, ItemGroups)
         registerTypeAdapter(BlockSoundGroup::class.java, SoundGroups)
         registerTypeAdapter(CItemStack.Size::class.java, StackSize)
-        registerTypeAdapter(TextComponent::class.java, TextComponents)
+        registerTypeAdapter(Component::class.java, TextComponents)
         registerTypeAdapter(StatusEffectInstance::class.java, StatusEffects)
         registerTypeAdapter(SoundEvent::class.java, SoundEvents)
         registerTypeAdapter(Identifier::class.java, Identifiers)
@@ -100,12 +100,12 @@ object Deserializers {
         }
     }
 
-    object TextComponents : JsonDeserializer<TextComponent> {
+    object TextComponents : JsonDeserializer<Component> {
         override fun deserialize(
             json: JsonElement?,
             typeOfT: Type?,
             context: JsonDeserializationContext?
-        ) = TextComponent.Serializer.fromJson(json)
+        ) = Component.Serializer.fromJson(json)
     }
 
     object StatusEffects : JsonDeserializer<StatusEffectInstance> {
