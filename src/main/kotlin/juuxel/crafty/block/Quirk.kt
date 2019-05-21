@@ -7,5 +7,5 @@ package juuxel.crafty.block
 import net.minecraft.block.Block
 
 interface Quirk {
-    val factory: (CBlockSettings) -> Block
+    val factory: (CBlockDefinition) -> Block
 }

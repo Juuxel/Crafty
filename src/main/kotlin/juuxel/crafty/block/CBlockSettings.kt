@@ -4,71 +4,74 @@
  */
 package juuxel.crafty.block
 
+import com.google.gson.JsonDeserializationContext
+import com.google.gson.JsonDeserializer
+import com.google.gson.JsonElement
+import com.google.gson.JsonObject
+import com.google.gson.annotations.JsonAdapter
 import juuxel.crafty.util.Content
-import juuxel.crafty.item.CItemSettings
-import juuxel.crafty.item.CItemStack
-import juuxel.crafty.util.WorldEvent
-import net.fabricmc.fabric.api.block.FabricBlockSettings
 import net.minecraft.block.Block
-import net.minecraft.util.Identifier
-import net.minecraft.util.registry.Registry
-import net.minecraft.util.shape.VoxelShape
+import net.minecraft.block.BlockRenderLayer
+import net.minecraft.sound.BlockSoundGroup
+import org.apache.logging.log4j.LogManager
+import java.lang.reflect.Type
 
-class CBlockSettings : Content<Block.Settings> {
-    lateinit var material: CMaterial
+@JsonAdapter(CBlockSettings.Companion::class)
+sealed class CBlockSettings : Content<Block.Settings> {
+    lateinit var base: String
         private set
 
-    var item: CItemSettings? = null
+    var lightLevel: Int = -1
         private set
 
-    var outlineShape: Array<Bounds> = arrayOf(Bounds().apply {
-        from = doubleArrayOf(0.0, 0.0, 0.0)
-        to = doubleArrayOf(16.0, 16.0, 16.0)
-    })
+    var collidable: Boolean? = null
         private set
 
-    var collisionShape: Array<Bounds>? = null
+    var hardness: Float = -1f
         private set
 
-    var drops: Array<CItemStack> = emptyArray()
+    var resistance: Float = -1f
         private set
 
-    var quirk: Quirk = Quirks.None
+    var sounds: BlockSoundGroup? = null
         private set
 
-    var onActivate: WorldEvent.OnBlockActivation? = null
-        private set
+    class Copied : CBlockSettings()
+    class FromMaterial : CBlockSettings()
 
-    var onPlaced: WorldEvent? = null
-        private set
+    private class Builder {
+        private var lightLevel: Int = -1
+        private var collidable: Boolean? = null
+        private var hardness: Float = -1f
+        private var resistance: Float = -1f
+        private var sounds: BlockSoundGroup? = null
 
-    var onBreak: WorldEvent? = null
-        private set
+        fun lightLevel(value: Int) { lightLevel = value }
+        fun collidable(value: Boolean) { collidable = value }
+        fun hardness(value: Float) { hardness = value }
+        fun resistance(value: Float) { resistance = value }
+        fun sounds(value: BlockSoundGroup) { sounds = value }
 
-    var falling: FallingBlockSettings? = null
-        private set
-
-    val builtOutlineShape: VoxelShape by lazy {
-        BlockUtils.buildShape(outlineShape)
+        fun build(ctor: (Int, Boolean, Float, Float, BlockSoundGroup?) -> CBlockSettings) =
+            ctor(lightLevel, collidable ?: false, hardness, resistance, sounds)
     }
 
-    val builtCollisionShape: VoxelShape? by lazy {
-        collisionShape?.let(BlockUtils::buildShape)
+    companion object : JsonDeserializer<CBlockSettings> {
+        private val LOGGER = LogManager.getLogger()
+
+        override fun deserialize(json: JsonElement, type: Type?, context: JsonDeserializationContext) =
+            json.run {
+                require(this.isJsonObject) { "Block attributes must be a JSON object" }
+                this as JsonObject
+                val attributes = when {
+                    has("copyFrom") -> Copied()
+                    has("material") -> FromMaterial()
+                    else -> throw IllegalArgumentException("Block attributes must have either copyFrom or material")
+                }
+
+                attributes.collidable =
+
+                attributes
+            }
     }
-
-    override fun toMc(): Block.Settings =
-        FabricBlockSettings.copy(Registry.BLOCK[Identifier(material.base)]).apply {
-            if (material.lightLevel != -1)
-                lightLevel(material.lightLevel)
-
-            material.collidable?.let { collidable(it) }
-
-            if (material.hardness != -1f)
-                hardness(material.hardness)
-
-            if (material.resistance != -1f)
-                hardness(material.resistance)
-
-            material.sounds?.let { sounds(it) }
-        }.build()
 }

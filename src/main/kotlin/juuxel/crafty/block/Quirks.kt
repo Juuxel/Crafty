@@ -9,7 +9,7 @@ import net.minecraft.util.Identifier
 import net.minecraft.util.registry.DefaultedRegistry
 import net.minecraft.util.registry.Registry
 
-enum class Quirks(override val factory: (CBlockSettings) -> Block) : Quirk {
+enum class Quirks(override val factory: (CBlockDefinition) -> Block) : Quirk {
     None(::CraftyBlock), Waterloggable(::CraftyWaterloggableBlock),
     Falling(::CraftyFallingBlock);
 

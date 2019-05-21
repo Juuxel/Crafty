@@ -24,30 +24,30 @@ import net.minecraft.world.BlockView
 import net.minecraft.world.World
 import net.minecraft.world.loot.context.LootContext
 
-open class CraftyBlock(val settings: CBlockSettings) : Block(settings.toMc()) {
+open class CraftyBlock(val definition: CBlockDefinition) : Block(definition.toMc()) {
     override fun getOutlineShape(
         state: BlockState?,
         view: BlockView?,
         pos: BlockPos?,
         context: EntityContext?
-    ) = settings.builtOutlineShape
+    ) = definition.builtOutlineShape
 
     override fun getCollisionShape(
         state: BlockState?,
         view: BlockView?,
         pos: BlockPos?,
         context: EntityContext?
-    ) = settings.builtCollisionShape ?: super.getCollisionShape(state, view, pos, context)
+    ) = definition.builtCollisionShape ?: super.getCollisionShape(state, view, pos, context)
 
     override fun getDroppedStacks(
         state: BlockState?,
         builder: LootContext.Builder?
-    ) = BlockUtils.getDrops(super.getDroppedStacks(state, builder), settings)
+    ) = BlockUtils.getDrops(super.getDroppedStacks(state, builder), definition)
 
     override fun activate(
         state: BlockState, world: World, pos: BlockPos, player: PlayerEntity, hand: Hand, hitResult: BlockHitResult
     ): Boolean {
-        BlockUtils.onActivate(world, player, pos, settings)
+        BlockUtils.onActivate(world, player, pos, definition)
 
         return super.activate(
             state,
@@ -59,13 +59,13 @@ open class CraftyBlock(val settings: CBlockSettings) : Block(settings.toMc()) {
         )
     }
 
-    override fun emitsRedstonePower(state: BlockState) = settings.material.redstonePower > 0
+    override fun emitsRedstonePower(state: BlockState) = definition.settings.redstonePower > 0
     override fun getWeakRedstonePower(
         state: BlockState?,
         view: BlockView?,
         pos: BlockPos?,
         direction: Direction?
-    ) = settings.material.redstonePower
+    ) = definition.settings.redstonePower
 
     override fun onBreak(
         world: World,
@@ -74,7 +74,7 @@ open class CraftyBlock(val settings: CBlockSettings) : Block(settings.toMc()) {
         player: PlayerEntity?
     ) {
         super.onBreak(world, pos, state, player)
-        BlockUtils.onBreak(world, pos, player, settings)
+        BlockUtils.onBreak(world, pos, player, definition)
     }
 
     override fun onPlaced(
@@ -85,13 +85,13 @@ open class CraftyBlock(val settings: CBlockSettings) : Block(settings.toMc()) {
         stack: ItemStack?
     ) {
         super.onPlaced(world, pos, state, entity, stack)
-        BlockUtils.onPlaced(world, pos, entity as? PlayerEntity, settings)
+        BlockUtils.onPlaced(world, pos, entity as? PlayerEntity, definition)
     }
 
-    override fun getRenderLayer() = settings.material.renderLayer
+    override fun getRenderLayer() = definition.settings.renderLayer
 }
 
-class CraftyWaterloggableBlock(settings: CBlockSettings) : CraftyBlock(settings), Waterloggable {
+class CraftyWaterloggableBlock(definition: CBlockDefinition) : CraftyBlock(definition), Waterloggable {
     init {
         defaultState = stateFactory.defaultState.with(Properties.WATERLOGGED, false)
     }
@@ -110,30 +110,30 @@ class CraftyWaterloggableBlock(settings: CBlockSettings) : CraftyBlock(settings)
             FluidTags.WATER))
 }
 
-open class CraftyFallingBlock(val settings: CBlockSettings) : FallingBlock(settings.toMc()) {
+open class CraftyFallingBlock(val definition: CBlockDefinition) : FallingBlock(definition.toMc()) {
     override fun getOutlineShape(
         state: BlockState?,
         view: BlockView?,
         pos: BlockPos?,
         context: EntityContext?
-    ) = settings.builtOutlineShape
+    ) = definition.builtOutlineShape
 
     override fun getCollisionShape(
         state: BlockState?,
         view: BlockView?,
         pos: BlockPos?,
         context: EntityContext?
-    ) = settings.builtCollisionShape ?: super.getCollisionShape(state, view, pos, context)
+    ) = definition.builtCollisionShape ?: super.getCollisionShape(state, view, pos, context)
 
     override fun getDroppedStacks(
         state: BlockState?,
         builder: LootContext.Builder?
-    ) = BlockUtils.getDrops(super.getDroppedStacks(state, builder), settings)
+    ) = BlockUtils.getDrops(super.getDroppedStacks(state, builder), definition)
 
     override fun activate(
         state: BlockState, world: World, pos: BlockPos, player: PlayerEntity, hand: Hand, hitResult: BlockHitResult
     ): Boolean {
-        BlockUtils.onActivate(world, player, pos, settings)
+        BlockUtils.onActivate(world, player, pos, definition)
 
         return super.activate(
             state,
@@ -145,13 +145,13 @@ open class CraftyFallingBlock(val settings: CBlockSettings) : FallingBlock(setti
         )
     }
 
-    override fun emitsRedstonePower(state: BlockState) = settings.material.redstonePower > 0
+    override fun emitsRedstonePower(state: BlockState) = definition.settings.redstonePower > 0
     override fun getWeakRedstonePower(
         state: BlockState?,
         view: BlockView?,
         pos: BlockPos?,
         direction: Direction?
-    ) = settings.material.redstonePower
+    ) = definition.settings.redstonePower
 
     override fun onBreak(
         world: World,
@@ -160,7 +160,7 @@ open class CraftyFallingBlock(val settings: CBlockSettings) : FallingBlock(setti
         player: PlayerEntity?
     ) {
         super.onBreak(world, pos, state, player)
-        BlockUtils.onBreak(world, pos, player, settings)
+        BlockUtils.onBreak(world, pos, player, definition)
     }
 
     override fun onPlaced(
@@ -171,13 +171,13 @@ open class CraftyFallingBlock(val settings: CBlockSettings) : FallingBlock(setti
         stack: ItemStack?
     ) {
         super.onPlaced(world, pos, state, entity, stack)
-        BlockUtils.onPlaced(world, pos, entity as? PlayerEntity, settings)
+        BlockUtils.onPlaced(world, pos, entity as? PlayerEntity, definition)
     }
 
     override fun configureFallingBlockEntity(entity: FallingBlockEntity) {
         super.configureFallingBlockEntity(entity)
 
-        if (settings.falling?.hurtsEntities == true)
+        if (definition.falling?.hurtsEntities == true)
             entity.setHurtEntities(true)
     }
 
@@ -187,12 +187,12 @@ open class CraftyFallingBlock(val settings: CBlockSettings) : FallingBlock(setti
         fallingBlockState: BlockState,
         currentStateInPos: BlockState
     ) {
-        settings.falling?.onLanding?.run(world, null, pos)
+        definition.falling?.onLanding?.run(world, null, pos)
 
-        if (world.random.nextDouble() < settings.falling?.breakingChance ?: 0.0) {
-            settings.falling?.onBreaking?.run(world, null, pos)
+        if (world.random.nextDouble() < definition.falling?.breakingChance ?: 0.0) {
+            definition.falling?.onBreaking?.run(world, null, pos)
 
-            settings.falling?.breakingState?.let {
+            definition.falling?.breakingState?.let {
                 if (world is ServerWorld) {
                     it.setBlockState(world, pos, 3)
                 }
@@ -200,5 +200,5 @@ open class CraftyFallingBlock(val settings: CBlockSettings) : FallingBlock(setti
         }
     }
 
-    override fun getRenderLayer() = settings.material.renderLayer
+    override fun getRenderLayer() = definition.settings.renderLayer
 }

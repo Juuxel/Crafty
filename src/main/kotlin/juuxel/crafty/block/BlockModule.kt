@@ -21,7 +21,7 @@ object BlockModule : Module {
 
     override fun loadContent(contentPack: String, reader: Reader, fileName: FileName) {
         try {
-            val settings = Crafty.gson.fromJson<CBlockSettings>(JsonReader(reader))
+            val settings = Crafty.gson.fromJson<CBlockDefinition>(JsonReader(reader))
             val block = settings.quirk.factory(settings)
 
             Registry.BLOCK.add(Identifier(contentPack, fileName.name), block)

@@ -15,12 +15,12 @@ import net.minecraft.world.World
 
 object BlockUtils {
     /**
-     * If [base] is empty, returns the drops from the [settings].
+     * If [base] is empty, returns the drops from the [definition].
      */
-    fun getDrops(base: List<ItemStack>, settings: CBlockSettings) =
+    fun getDrops(base: List<ItemStack>, definition: CBlockDefinition) =
         base.run {
             if (isEmpty()) {
-                settings.drops.map(CItemStack::toMc)
+                definition.drops.map(CItemStack::toMc)
             } else this
         }
 
@@ -33,15 +33,15 @@ object BlockUtils {
             VoxelShapes.empty()
         }
 
-    fun onActivate(world: World, player: PlayerEntity, pos: BlockPos, settings: CBlockSettings) {
-        settings.onActivate?.run(world, player, pos)
+    fun onActivate(world: World, player: PlayerEntity, pos: BlockPos, definition: CBlockDefinition) {
+        definition.onActivate?.run(world, player, pos)
     }
 
-    fun onBreak(world: World, pos: BlockPos, player: PlayerEntity?, settings: CBlockSettings) {
-        settings.onBreak?.run(world, player, pos)
+    fun onBreak(world: World, pos: BlockPos, player: PlayerEntity?, definition: CBlockDefinition) {
+        definition.onBreak?.run(world, player, pos)
     }
 
-    fun onPlaced(world: World, pos: BlockPos, player: PlayerEntity?, settings: CBlockSettings) {
-        settings.onPlaced?.run(world, player, pos)
+    fun onPlaced(world: World, pos: BlockPos, player: PlayerEntity?, definition: CBlockDefinition) {
+        definition.onPlaced?.run(world, player, pos)
     }
 }
