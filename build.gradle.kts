@@ -42,9 +42,12 @@ dependencies {
     compileOnly("net.fabricmc:fabric-language-kotlin:" + Versions.FABRIC_KOTLIN)
     modCompile("net.fabricmc.fabric-api:fabric-api:" + Versions.FABRIC)
 
-    // Other mods
+    // Other mods and libraries
     modCompile("towelette:Towelette:" + Versions.TOWELETTE)
     shadow("blue.endless:jankson:" + Versions.JANKSON)
+    shadow("io.arrow-kt:arrow-core-data:" + Versions.ARROW)
+    shadow("io.arrow-kt:arrow-core-extensions:" + Versions.ARROW)
+    shadow("io.arrow-kt:arrow-typeclasses:" + Versions.ARROW)
 }
 
 tasks.getByName<ProcessResources>("processResources") {
@@ -55,6 +58,7 @@ tasks.getByName<ProcessResources>("processResources") {
 
 tasks.getByName<ShadowJar>("shadowJar") {
     relocate("blue.endless.jankson", "juuxel.crafty.repackage.blue.endless.jankson")
+    relocate("arrow", "juuxel.crafty.repackage.arrow")
     classifier = "shadow"
     configurations = listOf(project.configurations.getByName("shadow"))
 }

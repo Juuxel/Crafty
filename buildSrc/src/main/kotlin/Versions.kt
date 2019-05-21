@@ -13,5 +13,6 @@ object Versions {
     // Other
     const val TOWELETTE = "1.5.2"
     const val JANKSON = "1.1.2"
+    const val ARROW = "0.9.0"
     //const val TNJSON = "1.2"
 }
