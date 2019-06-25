@@ -12,6 +12,7 @@ import blue.endless.jankson.JsonObject
 import blue.endless.jankson.JsonPrimitive
 import juuxel.crafty.util.JsonDeserializer
 
+// TODO: Is the id needed?
 data class PackMetadata(val id: String, val name: String?) {
     object Deserializer : JsonDeserializer<PackMetadata> {
         override fun deserialize(value: JsonObject): Either<String, PackMetadata> {
@@ -21,8 +22,9 @@ data class PackMetadata(val id: String, val name: String?) {
                 return Left("Unsupported format: $packVersion")
             }
 
-            fun string(key: String) =
-                value.get(String::class.java, key)?.let(::Right) ?: Left("Missing required property: $key")
+            fun string(key: String): Either<String, String> =
+                value.get(String::class.java, key)?.let(::Right)
+                        ?: Left("Missing required property: $key")
 
             return binding {
                 val id = string("id").bind()
