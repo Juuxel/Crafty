@@ -7,6 +7,9 @@ import arrow.effects.IO
 import arrow.effects.extensions.io.monad.binding
 import blue.endless.jankson.Jankson
 import com.google.common.collect.ImmutableMap
+import juuxel.crafty.data.BlockData
+import juuxel.crafty.data.ItemData
+import juuxel.crafty.data.Shape
 import juuxel.crafty.util.JsonDeserializer
 import org.apache.logging.log4j.LogManager
 import java.io.Closeable
@@ -68,7 +71,11 @@ class PackLoader(modules: Set<Module>) {
                     if (Files.notExists(modulePath)) continue
 
                     LOGGER.info("[Crafty] Loading content pack {}: module {}", packMeta.name, moduleName)
-                    for (contentPath in Files.walk(modulePath)) {
+                    val contentPaths = Files.find(modulePath, Int.MAX_VALUE, { path, _ ->
+                        val fileName = path.fileName.toString()
+                        fileName.endsWith(".json5", ignoreCase = true) || fileName.endsWith(".json", ignoreCase = true)
+                    })
+                    for (contentPath in contentPaths) {
                         try {
                             module.load(contentPath).bind()
                         } catch (e: Exception) {
@@ -98,7 +105,11 @@ class PackLoader(modules: Set<Module>) {
         private const val PACK_DIRECTORY = "crafty"
         private val LOGGER = LogManager.getLogger()
         private val JANKSON = Jankson.builder()
-            .registerTypeAdapter(PackMetadata.Deserializer)
+            .registerTypeAdapter(PackMetadata)
+            .registerTypeAdapter(BlockData)
+            .registerTypeAdapter(BlockData.Settings)
+            .registerTypeAdapter(ItemData)
+            .registerTypeAdapter(Shape)
             .build()
 
         private inline fun <reified T> Jankson.Builder.registerTypeAdapter(deserializer: JsonDeserializer<T>) =
