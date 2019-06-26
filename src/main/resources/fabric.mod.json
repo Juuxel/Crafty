@@ -2,6 +2,7 @@
   "schemaVersion": 1,
   "id": "crafty",
   "name": "Crafty",
+  "version": "$version",
 
   "entrypoints": {
     "main": [

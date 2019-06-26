@@ -35,22 +35,26 @@ repositories {
 }
 
 dependencies {
+    val excludeKotlin: ExternalModuleDependency.() -> Unit = {
+        exclude(group = "org.jetbrains.kotlin")
+    }
+
     minecraft("com.mojang:minecraft:" + Versions.MINECRAFT)
     mappings("net.fabricmc:yarn:" + Versions.MAPPINGS)
     modImplementation("net.fabricmc:fabric-loader:" + Versions.FABRIC_LOADER)
     modApi("net.fabricmc:fabric-language-kotlin:" + Versions.FABRIC_KOTLIN)
-    compileOnly("net.fabricmc:fabric-language-kotlin:" + Versions.FABRIC_KOTLIN)
+    //compileOnly("net.fabricmc:fabric-language-kotlin:" + Versions.FABRIC_KOTLIN)
     modImplementation("net.fabricmc.fabric-api:fabric-api:" + Versions.FABRIC)
 
     // Other mods and libraries
     //modImplementation("towelette:Towelette:" + Versions.TOWELETTE)
     shadow("blue.endless:jankson:" + Versions.JANKSON)
-    shadow("io.arrow-kt:arrow-core-data:" + Versions.ARROW)
-    shadow("io.arrow-kt:arrow-core-extensions:" + Versions.ARROW)
-    shadow("io.arrow-kt:arrow-typeclasses:" + Versions.ARROW)
-    shadow("io.arrow-kt:arrow-effects-data:" + Versions.ARROW)
-    shadow("io.arrow-kt:arrow-effects-extensions:" + Versions.ARROW)
-    shadow("io.arrow-kt:arrow-effects-io-extensions:" + Versions.ARROW)
+    shadow("io.arrow-kt:arrow-core-data:" + Versions.ARROW, excludeKotlin)
+    shadow("io.arrow-kt:arrow-core-extensions:" + Versions.ARROW, excludeKotlin)
+    shadow("io.arrow-kt:arrow-typeclasses:" + Versions.ARROW, excludeKotlin)
+    shadow("io.arrow-kt:arrow-effects-data:" + Versions.ARROW, excludeKotlin)
+    shadow("io.arrow-kt:arrow-effects-extensions:" + Versions.ARROW, excludeKotlin)
+    shadow("io.arrow-kt:arrow-effects-io-extensions:" + Versions.ARROW, excludeKotlin)
 }
 
 tasks.getByName<ProcessResources>("processResources") {

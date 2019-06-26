@@ -8,9 +8,11 @@ import arrow.effects.extensions.io.monad.binding
 import blue.endless.jankson.Jankson
 import com.google.common.collect.ImmutableMap
 import juuxel.crafty.data.BlockData
+import juuxel.crafty.data.Identifier
 import juuxel.crafty.data.ItemData
 import juuxel.crafty.data.Shape
 import juuxel.crafty.util.JsonDeserializer
+import juuxel.crafty.util.JsonPrimitiveDeserializer
 import org.apache.logging.log4j.LogManager
 import java.io.Closeable
 import java.nio.file.FileSystem
@@ -18,6 +20,7 @@ import java.nio.file.FileSystems
 import java.nio.file.Files
 import java.nio.file.Path
 import java.util.*
+import java.util.function.BiPredicate
 
 class PackLoader(modules: Set<Module>) {
     private val modules: Map<String, Module> = with(ImmutableMap.builder<String, Module>()) {
@@ -57,12 +60,19 @@ class PackLoader(modules: Set<Module>) {
                     { it.getPath(path) }
                 )
 
-            val packMeta = JANKSON.fromJson(
-                Files.readAllLines(getPath("crafty.pack.json")).joinToString("\n"),
-                PackMetadata::class.java
-            )
+            val packMetaPath = getPath("crafty.pack.json")
+            if (Files.notExists(packMetaPath)) {
+                LOGGER.debug("[Crafty] Skipping pack path {}, does not contain crafty.pack.json", packPath)
+                return@binding
+            }
 
-            LOGGER.info("[Crafty] Loading content pack {}", packMeta.name)
+            val packMeta = JANKSON.fromJson(
+                Files.readAllLines(packMetaPath).joinToString("\n"),
+                PackMetadata::class.java
+            ) ?: run {
+                LOGGER.error("[Crafty] Couldn't deserialize pack metadata for pack at {}, see log", packPath)
+                return@binding
+            }
 
             for ((moduleName, module) in modules) {
                 try {
@@ -71,28 +81,34 @@ class PackLoader(modules: Set<Module>) {
                     if (Files.notExists(modulePath)) continue
 
                     LOGGER.info("[Crafty] Loading content pack {}: module {}", packMeta.name, moduleName)
-                    val contentPaths = Files.find(modulePath, Int.MAX_VALUE, { path, _ ->
+                    val contentPaths = Files.find(modulePath, Int.MAX_VALUE, BiPredicate { path, _ ->
                         val fileName = path.fileName.toString()
                         fileName.endsWith(".json5", ignoreCase = true) || fileName.endsWith(".json", ignoreCase = true)
                     })
                     for (contentPath in contentPaths) {
                         try {
-                            module.load(contentPath).bind()
+                            val fileName = contentPath.fileName.toString()
+                            module.load(
+                                contentPath,
+                                Identifier(packMeta.id, fileName.substringBeforeLast('.').toLowerCase(Locale.ROOT)),
+                                JANKSON
+                            ).bind()
                         } catch (e: Exception) {
                             LOGGER.error(
                                 "[Crafty] Error while loading file {} in pack {}",
                                 runCatching { packPath.relativize(contentPath) }
                                     .getOrElse { contentPath },
-                                packMeta.name
+                                packMeta.name,
+                                e
                             )
                         }
                     }
                 } catch (e: Exception) {
-                    LOGGER.error("[Crafty] Error while loading module {} for pack {}", moduleName, packMeta.name)
+                    LOGGER.error("[Crafty] Error while loading module {} for pack {}", moduleName, packMeta.name, e)
                 }
             }
         } catch (e: Exception) {
-            LOGGER.error("[Crafty] Error while loading content pack from file {}", packPath)
+            LOGGER.error("[Crafty] Error while loading content pack from file {}", packPath, e)
         } finally {
             closing.descendingIterator().forEach {
                 // use it.use {} for properly suppressing exceptions
@@ -110,9 +126,13 @@ class PackLoader(modules: Set<Module>) {
             .registerTypeAdapter(BlockData.Settings)
             .registerTypeAdapter(ItemData)
             .registerTypeAdapter(Shape)
+            .registerPrimitiveTypeAdapter(Identifier)
             .build()
 
         private inline fun <reified T> Jankson.Builder.registerTypeAdapter(deserializer: JsonDeserializer<T>) =
             registerTypeAdapter(T::class.java, deserializer.toJanksonDeserializer())
+
+        private inline fun <reified T> Jankson.Builder.registerPrimitiveTypeAdapter(deserializer: JsonPrimitiveDeserializer<T>) =
+            registerPrimitiveTypeAdapter(T::class.java, deserializer.toJanksonDeserializer())
     }
 }

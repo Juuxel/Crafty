@@ -7,6 +7,7 @@ package juuxel.crafty.util
 import arrow.core.Either
 import arrow.core.identity
 import blue.endless.jankson.JsonObject
+import org.apache.logging.log4j.LogManager
 import java.util.function.Function
 
 interface JsonDeserializer<out T> {
@@ -15,8 +16,16 @@ interface JsonDeserializer<out T> {
     fun toJanksonDeserializer(): Function<JsonObject, @UnsafeVariance T> =
         Function {
             deserialize(it).fold(
-                ifLeft = { msg -> throw IllegalArgumentException("Error while deserializing: $msg") },
+                ifLeft = { msg ->
+                    val exceptionMessage = "Error while deserializing: $msg"
+                    LOGGER.error("[Crafty] $exceptionMessage")
+                    throw IllegalArgumentException(exceptionMessage)
+                },
                 ifRight = ::identity
             )
         }
+
+    companion object {
+        private val LOGGER = LogManager.getLogger()
+    }
 }

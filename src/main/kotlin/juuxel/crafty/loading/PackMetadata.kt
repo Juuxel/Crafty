@@ -18,10 +18,10 @@ data class PackMetadata(val id: String, val name: String?) {
         private const val CURRENT_FORMAT_VERSION = 1
 
         override fun deserialize(value: JsonObject): Either<String, PackMetadata> {
-            val packVersion = value["pack_version"] ?: return Left("Missing pack version!")
+            val packFormat = value["pack_format"] ?: return Left("Missing pack format!")
 
-            if ((packVersion as? JsonPrimitive)?.value != CURRENT_FORMAT_VERSION) {
-                return Left("Unsupported format: $packVersion")
+            if ((packFormat as? JsonPrimitive)?.value != CURRENT_FORMAT_VERSION) {
+                return Left("Unsupported format: $packFormat")
             }
 
             return binding {

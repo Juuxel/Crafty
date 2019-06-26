@@ -1,9 +1,7 @@
 package juuxel.crafty.data
 
-import arrow.core.Either
-import arrow.core.Left
-import arrow.core.identity
-import arrow.core.right
+import arrow.core.*
+import juuxel.crafty.util.JsonPrimitiveDeserializer
 
 // Copied from JSON Factory
 
@@ -28,7 +26,19 @@ data class Identifier(val namespace: String, val path: String) {
      */
     fun wrapPath(prefix: String, suffix: String): Identifier = copy(path = "$prefix$path$suffix")
 
-    companion object {
+    /**
+     * Returns `true` if this identifier is a valid Minecraft identifier.
+     */
+    fun isValidMc(): Boolean = namespace.matches(NAMESPACE_REGEX) && path.matches(PATH_REGEX)
+
+    private fun validate(): Option<Identifier> =
+        if (isValidMc()) this.some()
+        else None
+
+    companion object : JsonPrimitiveDeserializer<Identifier> {
+        private val NAMESPACE_REGEX = "[a-z0-9_.-]+".toRegex()
+        private val PATH_REGEX = "[a-z0-9/._-]+".toRegex()
+
         // TODO: Upstream parsing improvements
         /**
          * Creates an Identifier from a [combined] string in the `namespace:path` format.
@@ -50,7 +60,7 @@ data class Identifier(val namespace: String, val path: String) {
 
         /**
          * Creates an Identifier from a [combined] string in the `namespace:path` format.
-         * Returns null if the input is invalid.
+         * Returns `Either.Left` if the input is invalid.
          */
         fun parse(combined: String): Either<String, Identifier> =
             if (combined.count { it == ':' } != 1) Left("Identifiers must have exactly one colon")
@@ -60,8 +70,21 @@ data class Identifier(val namespace: String, val path: String) {
             }
 
         /**
+         * Creates an Identifier from a [combined] string in the `namespace:path` format,
+         * using Minecraft rules (implicit `minecraft` namespace, character validation).
+         * Returns `Either.Left` if the input is invalid.
+         */
+        fun parseMc(combined: String): Either<String, Identifier> = when (combined.count { it == ':' }) {
+            0 -> mc(combined).validate().toEither { "Path contains invalid characters" }
+            1 -> parse(combined).flatMap { it.validate().toEither { "Identifier contains invalid characters" } }
+            else -> Left("An identifier must have exactly one colon (':')")
+        }
+
+        /**
          * Creates an Identifier from the `minecraft` namespace and the [path].
          */
         fun mc(path: String) = Identifier("minecraft", path)
+
+        override fun deserialize(value: Any?) = parseMc(value.toString())
     }
 }
