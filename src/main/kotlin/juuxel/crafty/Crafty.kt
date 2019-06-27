@@ -9,6 +9,7 @@ import blue.endless.jankson.Jankson
 import juuxel.crafty.data.BlockData
 import juuxel.crafty.data.Identifier
 import juuxel.crafty.data.ItemData
+import juuxel.crafty.impl.fabric.CraftyBlock
 import juuxel.crafty.loading.Module
 import juuxel.crafty.loading.PackLoader
 import net.fabricmc.api.ModInitializer
@@ -42,7 +43,7 @@ object Crafty : ModInitializer {
 
         override fun load(path: Path, id: Identifier, jankson: Jankson) = IO<Unit> {
             val data = jankson.fromJson(jankson.load(Files.newInputStream(path)), BlockData::class.java)
-            val block = Block(Block.Settings.copy(Registry.BLOCK[data.settings.base.toMc()]))
+            val block = CraftyBlock(Block.Settings.copy(Registry.BLOCK[data.settings.base.toMc()]), data)
             val item = data.item?.let { BlockItem(block, readItemSettings(it)) }
 
             Registry.register(Registry.BLOCK, id.toMc(), block)
