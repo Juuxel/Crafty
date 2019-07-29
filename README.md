@@ -1,3 +1,5 @@
+# Crafty's development has been stopped.
+
 <img src="icon.png" align="left" width="180px"/>
 
 # Crafty
